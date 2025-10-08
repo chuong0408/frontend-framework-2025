@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bootstrap • Simple Product List + Edit Form (No JS)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    body { background-color:#f8f9fa; }
+    .product-thumb { width:60px; height:60px; object-fit:cover; border-radius:.5rem; }
+    .sticky-col { position: sticky; top: 1rem; }
+  </style>
+</head>
+<body>
+  <header class="py-4 bg-white border-bottom mb-4">
+    <div class="container d-flex align-items-center justify-content-between">
+      <h1 class="h4 mb-0">MyShop</h1>
+      <a class="btn btn-primary" href="#editForm">Add / Edit Product</a>
+    </div>
+  </header>
+
+  <main class="container pb-5">
+    <div class="row g-4">
+      <!-- Products list -->
+      <section class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">Products</span>
+            <small class="text-secondary">Simple static list (no JavaScript)</small>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th style="width:80px">Image</th>
+                    <th>Title</th>
+                    <th style="width:140px">Category</th>
+                    <th style="width:120px" class="text-end">Price</th>
+                    <th style="width:120px" class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><img class="product-thumb" src="https://picsum.photos/seed/phones/120/120" alt="Wireless Headphones"></td>
+                    <td>Wireless Headphones</td>
+                    <td><span class="badge text-bg-dark">Electronics</span></td>
+                    <td class="text-end">$79.99</td>
+                    <td class="text-end"><a href="#editForm" class="btn btn-sm btn-outline-secondary">Edit</a></td>
+                  </tr>
+                  <tr>
+                    <td><img class="product-thumb" src="https://picsum.photos/seed/lamp/120/120" alt="Smart LED Lamp"></td>
+                    <td>Smart LED Lamp</td>
+                    <td><span class="badge text-bg-dark">Home</span></td>
+                    <td class="text-end">$29.50</td>
+                    <td class="text-end"><a href="#editForm" class="btn btn-sm btn-outline-secondary">Edit</a></td>
+                  </tr>
+                  <tr>
+                    <td><img class="product-thumb" src="https://picsum.photos/seed/shoes/120/120" alt="Running Shoes"></td>
+                    <td>Running Shoes</td>
+                    <td><span class="badge text-bg-dark">Fashion</span></td>
+                    <td class="text-end">$59.00</td>
+                    <td class="text-end"><a href="#editForm" class="btn btn-sm btn-outline-secondary">Edit</a></td>
+                  </tr>
+                  <tr>
+                    <td><img class="product-thumb" src="https://picsum.photos/seed/speaker/120/120" alt="Bluetooth Speaker"></td>
+                    <td>Bluetooth Speaker</td>
+                    <td><span class="badge text-bg-dark">Electronics</span></td>
+                    <td class="text-end">$39.99</td>
+                    <td class="text-end"><a href="#editForm" class="btn btn-sm btn-outline-secondary">Edit</a></td>
+                  </tr>
+                  <tr>
+                    <td><img class="product-thumb" src="https://picsum.photos/seed/bottle/120/120" alt="Stainless Water Bottle"></td>
+                    <td>Stainless Water Bottle</td>
+                    <td><span class="badge text-bg-dark">Sports</span></td>
+                    <td class="text-end">$15.75</td>
+                    <td class="text-end"><a href="#editForm" class="btn btn-sm btn-outline-secondary">Edit</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Edit form -->
+      <aside class="col-lg-4">
+        <div class="card shadow-sm sticky-col" id="editForm">
+          <div class="card-header">Edit Product</div>
+          <div class="card-body">
+            <form action="#" method="post">
+              <div class="mb-3">
+                <label for="pTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="pTitle" name="title" placeholder="Product title" required>
+              </div>
+              <div class="mb-3">
+                <label for="pPrice" class="form-label">Price (USD)</label>
+                <input type="number" class="form-control" id="pPrice" name="price" step="0.01" min="0" placeholder="0.00" required>
+              </div>
+              <div class="mb-3">
+                <label for="pCategory" class="form-label">Category</label>
+                <select id="pCategory" class="form-select" name="category" required>
+                  <option value="" selected>Choose...</option>
+                  <option>Electronics</option>
+                  <option>Home</option>
+                  <option>Fashion</option>
+                  <option>Sports</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="pImage" class="form-label">Image URL</label>
+                <input type="url" class="form-control" id="pImage" name="image" placeholder="https://example.com/image.jpg" required>
+              </div>
+              <div class="mb-3">
+                <label for="pDesc" class="form-label">Description</label>
+                <textarea id="pDesc" class="form-control" name="description" rows="3" placeholder="Short product description" required></textarea>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+              </div>
+
+              <!-- Optional hidden id field if your backend needs it -->
+              <input type="hidden" name="id" value="">
+            </form>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="py-4 bg-dark text-white">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <span>© <span id="year">2025</span> MyShop</span>
+      <a class="btn btn-outline-light btn-sm" href="#top">Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

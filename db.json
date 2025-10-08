@@ -1,0 +1,107 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "another title",
+      "creator": "admin",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vulputate vitae eros ac convallis. Nullam imperdiet quam nec dui facilisis blandit. Duis vehicula semper orci, at efficitur sapien aliquet eu. In dui tortor, imperdiet in est sit amet, placerat commodo erat. Nam id lorem ac nisl egestas rhoncus. Integer vitae vehicula dui, vel commodo enim. Fusce varius ultrices tellus. Mauris nec ante bibendum, sagittis quam ut, dignissim est. Praesent ornare mi at lectus maximus, at tristique lacus dictum. Vestibulum vulputate nisl sit amet quam tincidunt, vel congue lorem lacinia. Mauris iaculis, sem at venenatis vehicula, augue nisi sollicitudin turpis, a pellentesque nibh mauris sit amet felis",
+      "tags": "trips",
+      "time": 8,
+      "image": "https://tse3.mm.bing.net/th/id/OIP.KYuOpkpecLMDa8XBEjRhLAHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+    },
+    {
+      "id": "3b2a",
+      "title": "au nau",
+      "time": 10,
+      "image": "https://tse3.mm.bing.net/th/id/OIP.KYuOpkpecLMDa8XBEjRhLAHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+      "description": "tuaidkfakj asn",
+      "creator": "admin",
+      "tags": "news"
+    },
+    {
+      "id": "c549",
+      "title": "",
+      "price": "",
+      "category": "",
+      "image": "",
+      "description": "",
+      "creator": "admin",
+      "tags": "news"
+    }
+  ],
+  "users": [
+    {
+      "userName": "admin",
+      "fullName": "",
+      "email": "",
+      "password": "1234",
+      "id": "ec99"
+    },
+    {
+      "userName": "user",
+      "fullName": "Chuong",
+      "email": "chuongpdpk03971@gmail.com",
+      "password": "1234",
+      "id": "aec9"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "title": "Wireless Headphones",
+      "price": 79.99,
+      "category": "Electronics",
+      "image": "https://picsum.photos/seed/phones/120/120",
+      "description": "Noise-cancelling over-ear with 30h battery."
+    },
+    {
+      "id": "2",
+      "title": "Smart LED Lamp",
+      "price": 29.5,
+      "category": "Home",
+      "image": "https://picsum.photos/seed/lamp/120/120",
+      "description": "Warm-to-cool light, app & voice control."
+    },
+    {
+      "id": "3",
+      "title": "Running Shoes",
+      "price": 59,
+      "category": "Fashion",
+      "image": "https://picsum.photos/seed/shoes/120/120",
+      "description": "Breathable mesh, cushioned sole."
+    },
+    {
+      "id": "4",
+      "title": "Bluetooth Speaker",
+      "price": 39.99,
+      "category": "Electronics",
+      "image": "https://picsum.photos/seed/speaker/120/120",
+      "description": "Portable, waterproof, deep bass."
+    },
+    {
+      "title": "Stainless Water Bottle",
+      "price": 123,
+      "category": "Sports",
+      "image": "https://picsum.photos/seed/bottle/120/120",
+      "description": "Vacuum insulated, 750ml.",
+      "creator": "admin",
+      "tags": "news",
+      "id": "5"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": null
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": null
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
