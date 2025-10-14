@@ -3,9 +3,10 @@ import { ref, reactive } from "vue";
 // code trong này
 // import Modal from "./components/Modal.vue";
 // import ChildComponent from "./components/ChildComponent.vue";
-import Lab2 from './lab2.vue'
-import BaseLayout from "./component/BaseLayout.vue";
-import Loginform from "./component/loginform.vue";
+// import Lab2 from './lab2.vue'
+// import BaseLayout from "./component/BaseLayout.vue";
+// import Loginform from "./component/loginform.vue";
+import Demstore from "./components/demoVuex.vue"
 /**
  * tên
  * chuyên ngành
@@ -92,6 +93,7 @@ const switchSlot = () => {
     </template>
   </BaseLayout> -->
   <!-- <Lab2/> -->
+  <!-- <Demostore/> -->
   <router-view />
 </template>
 

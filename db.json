@@ -35,6 +35,7 @@
       "fullName": "",
       "email": "",
       "password": "1234",
+      "role": "admin",
       "id": "ec99"
     },
     {
@@ -42,51 +43,87 @@
       "fullName": "Chuong",
       "email": "chuongpdpk03971@gmail.com",
       "password": "1234",
+      "role": "user",
       "id": "aec9"
+    },
+    {
+      "id": "25c8",
+      "userName": "chuong1",
+      "fullName": "phamdinhchuong",
+      "email": "chuong@gmail.com",
+      "password": "123456",
+      "role": "user"
+    },
+    {
+      "id": "7a32",
+      "userName": "huy01",
+      "fullName": "huybmt",
+      "email": "huy@gmail.com",
+      "password": "123456",
+      "role": "user"
     }
   ],
   "products": [
     {
-      "id": "1",
-      "title": "Wireless Headphones",
-      "price": 79.99,
-      "category": "Electronics",
-      "image": "https://picsum.photos/seed/phones/120/120",
-      "description": "Noise-cancelling over-ear with 30h battery."
+      "id": "1760077668907",
+      "name": "111111",
+      "categoryId": 1,
+      "images": [
+        "/uploads/1760077668873-Bá» sÆ°u táº­p figure Cupoche.jpg",
+        "/uploads/1760077668888-Chi tiáº¿t figure Cupoche.jpg",
+        "/uploads/1760077668892-Má» há»p figure Cupoche.jpg"
+      ],
+      "quantity": 123,
+      "discount": 5125,
+      "updatedAt": "2025-10-13T07:17:16.175Z"
     },
     {
-      "id": "2",
-      "title": "Smart LED Lamp",
-      "price": 29.5,
-      "category": "Home",
-      "image": "https://picsum.photos/seed/lamp/120/120",
-      "description": "Warm-to-cool light, app & voice control."
+      "id": "1760077759870",
+      "name": "vsavdbf",
+      "categoryId": 1,
+      "images": [
+        "/uploads/1760077759841-TÆ°á»£ng con giÃ¡p trong trang trÃ­ nhÃ .jpg",
+        "/uploads/1760077759851-Bá» 12 con giÃ¡p xáº¿p vÃ²ng trÃ²n.jpg",
+        "/uploads/1760077759863-Há»p Äá»±ng tÆ°á»£ng con giÃ¡p.jpg"
+      ]
     },
     {
-      "id": "3",
-      "title": "Running Shoes",
-      "price": 59,
-      "category": "Fashion",
-      "image": "https://picsum.photos/seed/shoes/120/120",
-      "description": "Breathable mesh, cushioned sole."
+      "id": "1760080577907",
+      "name": "sdvasdvsdv",
+      "categoryId": 2,
+      "images": [
+        "/uploads/1760080577880-Bá» sÆ°u táº­p figure Cupoche.jpg",
+        "/uploads/1760080577900-Chi tiáº¿t figure Cupoche.jpg",
+        "/uploads/1760080577904-Má» há»p figure Cupoche.jpg"
+      ]
     },
     {
-      "id": "4",
-      "title": "Bluetooth Speaker",
-      "price": 39.99,
-      "category": "Electronics",
-      "image": "https://picsum.photos/seed/speaker/120/120",
-      "description": "Portable, waterproof, deep bass."
+      "id": "p_1760300871808",
+      "name": "Sản phẩm 5",
+      "categoryId": 2,
+      "discount": 4535151,
+      "quantity": 123,
+      "images": [
+        "/uploads/1760300871789-Sáº¯p Xáº¿p Figure Theo Chá»§ Äá» Anime.jpg",
+        "/uploads/1760300871796-Dá»¥ng Cá»¥ Vá» Sinh Figure.jpg",
+        "/uploads/1760300871799-Há» Thá»ng Ãnh SÃ¡ng HoÃ n Háº£o.jpg",
+        "/uploads/1760300871802-Lá»±a Chá»n Tá»§ TrÆ°ng BÃ y Figure.jpg"
+      ],
+      "createdAt": "2025-10-12T20:27:51.808Z"
     },
     {
-      "title": "Stainless Water Bottle",
-      "price": 123,
-      "category": "Sports",
-      "image": "https://picsum.photos/seed/bottle/120/120",
-      "description": "Vacuum insulated, 750ml.",
-      "creator": "admin",
-      "tags": "news",
-      "id": "5"
+      "id": "p_1760340806355",
+      "name": "chuongakjd",
+      "categoryId": 1,
+      "discount": 10225,
+      "quantity": 12,
+      "images": [
+        "/uploads/1760340806326-Sáº¯p Xáº¿p Figure Theo Chá»§ Äá» Anime.jpg",
+        "/uploads/1760340806336-Dá»¥ng Cá»¥ Vá» Sinh Figure.jpg",
+        "/uploads/1760340806346-Há» Thá»ng Ãnh SÃ¡ng HoÃ n Háº£o.jpg",
+        "/uploads/1760340806352-Lá»±a Chá»n Tá»§ TrÆ°ng BÃ y Figure.jpg"
+      ],
+      "createdAt": "2025-10-13T07:33:26.355Z"
     }
   ],
   "comments": [
@@ -103,5 +140,19 @@
   ],
   "profile": {
     "name": "typicode"
-  }
+  },
+  "categories": [
+    {
+      "id": "1",
+      "name": "Mô hình Anime",
+      "description": "Nhân vật nổi tiếng từ Nhật Bản",
+      "type": "Giải trí"
+    },
+    {
+      "id": "2",
+      "name": "Mô hình Văn hóa",
+      "description": "Sản phẩm truyền thống",
+      "type": "Nghệ thuật"
+    }
+  ]
 }
