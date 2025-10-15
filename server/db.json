@@ -1,0 +1,87 @@
+{
+  "posts": [
+    {
+      "id": "6",
+      "title": "another title",
+      "creator": "admin",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vulputate vitae eros ac convallis. Nullam imperdiet quam nec dui facilisis blandit. Duis vehicula semper orci, at efficitur sapien aliquet eu. In dui tortor, imperdiet in est sit amet, placerat commodo erat. Nam id lorem ac nisl egestas rhoncus. Integer vitae vehicula dui, vel commodo enim. Fusce varius ultrices tellus. Mauris nec ante bibendum, sagittis quam ut, dignissim est. Praesent ornare mi at lectus maximus, at tristique lacus dictum. Vestibulum vulputate nisl sit amet quam tincidunt, vel congue lorem lacinia. Mauris iaculis, sem at venenatis vehicula, augue nisi sollicitudin turpis, a pellentesque nibh mauris sit amet felis",
+      "tags": "trips",
+      "time": 3,
+      "image": "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/canh-dep-2.jpg"
+    },
+    {
+      "id": "8",
+      "title": "another title 8",
+      "creator": "admin",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vulputate vitae eros ac convallis. Nullam imperdiet quam nec dui facilisis blandit. Duis vehicula semper orci, at efficitur sapien aliquet eu. In dui tortor, imperdiet in est sit amet, placerat commodo erat. Nam id lorem ac nisl egestas rhoncus. Integer vitae vehicula dui, vel commodo enim. Fusce varius ultrices tellus. Mauris nec ante bibendum, sagittis quam ut, dignissim est. Praesent ornare mi at lectus maximus, at tristique lacus dictum. Vestibulum vulputate nisl sit amet quam tincidunt, vel congue lorem lacinia. Mauris iaculis, sem at venenatis vehicula, augue nisi sollicitudin turpis, a pellentesque nibh mauris sit amet felis",
+      "tags": "trips",
+      "time": 3,
+      "image": "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/canh-dep-2.jpg"
+    },
+    {
+      "id": "01ea",
+      "title": "3131",
+      "time": 31313,
+      "image": "https://placehold.co/600x400",
+      "description": "313131",
+      "creator": "admin",
+      "tags": "news"
+    },
+    {
+      "id": "6e59",
+      "title": "3131",
+      "time": 3131313,
+      "image": "https://placehold.co/600x400",
+      "description": "https://placehold.co/600x400",
+      "creator": "admin",
+      "tags": "news"
+    },
+    {
+      "id": "028f",
+      "title": "3131",
+      "time": 3131,
+      "image": "https://placehold.co/600x400",
+      "description": "31313",
+      "creator": "admin",
+      "tags": "news"
+    },
+    {
+      "id": "7724",
+      "title": "313131",
+      "time": 313131,
+      "image": "https://placehold.co/600x400",
+      "description": "31313",
+      "creator": "admin",
+      "tags": "news"
+    }
+  ],
+  "users": [
+    {
+      "name": "admin",
+      "username": "admin",
+      "password": "123456",
+      "role": "admin"
+    },
+    {
+      "name": "user",
+      "username": "user",
+      "password": "123456",
+      "role": "user"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": null
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": null
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

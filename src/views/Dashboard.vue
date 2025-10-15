@@ -10,111 +10,240 @@ const logout = () => {
 </script>
 
 <template>
-    <div>
-        <nav>
-            <div>
-                <router-link to="/admin/products" class="btn btn-success">
-                    Trang chủ
+    <div class="dashboard-wrapper">
+        <nav class="navbar">
+            <div class="nav-left">
+                <router-link to="/admin/products" class="nav-brand">
+                    🏠 Trang quản trị
                 </router-link>
-                <router-link to="/profile">
-                    <i class="icon-user"></i> Profile
-                </router-link>
-            </div>
-            
-            <!-- Sửa: Bỏ () sau isAuthenticated -->
-            <div v-if="!auth.isAuthenticated">
-                <router-link to="/register" class="btn btn-primary">
-                    Đăng ký
-                </router-link>
-            </div>
-            
-            <div v-if="!auth.isAuthenticated">
-                <router-link to="/login" class="btn btn-primary">
-                    Đăng nhập
-                </router-link>
+
+                <div v-if="auth.isAdmin()" class="nav-menu">
+                    <router-link to="/admin/products" class="nav-link">
+                        📦 Sản phẩm
+                    </router-link>
+                    <router-link to="/admin/users" class="nav-link">
+                        👥 Người dùng
+                    </router-link>
+                </div>
             </div>
 
-            <div v-if="auth.isAuthenticated">
-                <span class="user-info">Xin chào, {{ auth.user?.username }}</span>
-                <button type="button" class="btn btn-light" @click="logout">
-                    Đăng xuất
-                </button>
+            <div class="nav-right">
+                <router-link to="/profile" class="nav-link">
+                    <i class="icon-user">👤</i> Profile
+                </router-link>
+
+                <div v-if="!auth.isAuthenticated" class="auth-buttons">
+                    <router-link to="/register" class="btn btn-outline">
+                        Đăng ký
+                    </router-link>
+                    <router-link to="/login" class="btn btn-primary">
+                        Đăng nhập
+                    </router-link>
+                </div>
+
+                <div v-if="auth.isAuthenticated" class="user-section">
+                    <span class="user-info">
+                        Xin chào, <strong>{{ auth.user?.username }}</strong>
+                        <span class="user-role" v-if="auth.isAdmin()">
+                            (Admin)
+                        </span>
+                    </span>
+                    <button type="button" class="btn btn-logout" @click="logout">
+                        Đăng xuất
+                    </button>
+                </div>
             </div>
         </nav>
 
-        <router-view />
+        <div class="content">
+            <router-view />
+        </div>
     </div>
 </template>
 
 <style scoped>
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.dashboard-wrapper {
+  min-height: 100vh;
+  background-color: #f2f2f2;
+  color: #333;
 }
 
-nav > div {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.nav-brand:hover {
+  background-color: #dcdcdc;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #666;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link:hover {
+  background-color: #dcdcdc;
+  color: #333;
+}
+
+.nav-link.router-link-active {
+  background-color: #999;
+  color: white;
+}
+
+.nav-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 8px;
 }
 
 .btn {
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 14px;
 }
 
-.btn-success {
-    background-color: #28a745;
-    color: white;
+.btn-outline {
+  background-color: transparent;
+  color: #666;
+  border: 1px solid #999;
 }
 
-.btn-success:hover {
-    background-color: #218838;
+.btn-outline:hover {
+  background-color: #999;
+  color: white;
 }
 
 .btn-primary {
-    background-color: #007bff;
-    color: white;
+  background-color: #999;
+  color: white;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+  background-color: #777;
 }
 
-.btn-light {
-    background-color: #f8f9fa;
-    color: #333;
-    border: 1px solid #ddd;
+.btn-logout {
+  background-color: #b33a3a;
+  color: white;
 }
 
-.btn-light:hover {
-    background-color: #e2e6ea;
+.btn-logout:hover {
+  background-color: #992d2d;
+}
+
+.user-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
 .user-info {
-    margin-right: 10px;
-    color: #333;
-    font-weight: 500;
+  color: #444;
+  font-size: 14px;
+}
+
+.user-info strong {
+  color: #666;
+}
+
+.user-role {
+  background-color: #ccc;
+  color: #333;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 6px;
 }
 
 .icon-user {
-    margin-right: 5px;
+  margin-right: 4px;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
+.content {
+  padding: 24px;
 }
 
-a:hover {
-    opacity: 0.8;
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .nav-left,
+  .nav-right {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .nav-menu {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+
+  .user-section {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>

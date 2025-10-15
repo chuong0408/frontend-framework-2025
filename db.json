@@ -31,28 +31,12 @@
   ],
   "users": [
     {
-      "userName": "admin",
-      "fullName": "",
-      "email": "",
-      "password": "1234",
-      "role": "admin",
-      "id": "ec99"
-    },
-    {
       "userName": "user",
-      "fullName": "Chuong",
+      "fullName": "Chuong123",
       "email": "chuongpdpk03971@gmail.com",
-      "password": "1234",
-      "role": "user",
-      "id": "aec9"
-    },
-    {
-      "id": "25c8",
-      "userName": "chuong1",
-      "fullName": "phamdinhchuong",
-      "email": "chuong@gmail.com",
       "password": "123456",
-      "role": "user"
+      "role": "admin",
+      "id": "aec9"
     },
     {
       "id": "7a32",
