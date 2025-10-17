@@ -7,10 +7,11 @@ import ProductForm from '../components/ProductForm.vue'
 import ProductDetail from '../components/ProductDetail.vue'
 import UserAdmin from '../components/UserAdmin.vue'
 import { auth } from '../store/auth'
+import Checkout from '../views/Checkout.vue'
 import Register from '../views/Register.vue'
 
 const routes = [
-  // Trang chủ cho tất cả người dùng (kể cả chưa đăng nhập)
+  // Trang chủ
   {
     path: '/',
     name: 'Home',
@@ -25,12 +26,38 @@ const routes = [
     name: 'Register',
     component: Register
   },
+  // Profile
   {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Profile.vue'),
     meta: { requiresAuth: true }
   },
+  // Giỏ hàng
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import('../views/Cart.vue')
+  },
+  // Checkout
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: Checkout
+  },
+  // Danh sách sản phẩm (dùng chung cho cả Admin và User)
+  {
+    path: '/products',
+    name: 'ProductsPublic',
+    component: ProductList
+  },
+  // Chi tiết sản phẩm (dùng chung)
+  {
+    path: '/products/:id',
+    name: 'ProductDetailPublic',
+    component: ProductDetail
+  },
+  
   // Routes dành cho ADMIN
   {
     path: '/admin',
@@ -47,7 +74,7 @@ const routes = [
       {
         path: 'products',
         component: ProductList,
-        name: 'ProductList',
+        name: 'ProductListAdmin',
         meta: { requiresAuth: true, requiresAdmin: true }
       },
       {
@@ -65,10 +92,9 @@ const routes = [
       {
         path: 'products/detail/:id',
         component: ProductDetail,
-        name: 'ProductDetail',
+        name: 'ProductDetailAdmin',
         meta: { requiresAuth: true, requiresAdmin: true }
       },
-      // Quản lý người dùng
       {
         path: 'users',
         component: UserAdmin,
@@ -86,29 +112,18 @@ const router = createRouter({
 
 // Navigation Guard
 router.beforeEach((to, from, next) => {
-  console.log('Navigating to:', to.path)
-  console.log('User authenticated:', auth.isAuthenticated)
-  console.log('User role:', auth.user?.role)
-
-  // Nếu chưa đăng nhập và cố truy cập route yêu cầu auth
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    console.log('Not authenticated, redirecting to login')
     next('/login')
     return
   }
 
-  // Nếu không phải admin và cố truy cập route admin
   if (to.meta.requiresAdmin && !auth.isAdmin()) {
-    console.log('Not admin, access denied')
     alert('Bạn không có quyền truy cập trang này!')
     next('/')
     return
   }
 
-  // Nếu đã đăng nhập và cố truy cập login/register
   if ((to.path === '/login' || to.path === '/register') && auth.isAuthenticated) {
-    console.log('Already logged in, redirecting based on role')
-    // Admin -> trang quản trị, User -> trang chủ
     if (auth.isAdmin()) {
       next('/admin/products')
     } else {
@@ -120,4 +135,4 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-export default router 
+export default router

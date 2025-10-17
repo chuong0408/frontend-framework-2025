@@ -2,7 +2,9 @@
   <div class="product-list-container">
     <div class="header">
       <h2>Danh sách sản phẩm</h2>
-      <button @click="addProduct" class="btn-add">+ Thêm sản phẩm mới</button>
+      <button v-if="isAdmin" @click="addProduct" class="btn-add">
+        + Thêm sản phẩm mới
+      </button>
     </div>
 
     <div v-if="loading" class="loading">
@@ -11,7 +13,9 @@
 
     <div v-else-if="products.length === 0" class="empty-state">
       <p>📦 Chưa có sản phẩm nào</p>
-      <button @click="addProduct" class="btn-add">Thêm sản phẩm đầu tiên</button>
+      <button v-if="isAdmin" @click="addProduct" class="btn-add">
+        Thêm sản phẩm đầu tiên
+      </button>
     </div>
 
     <div v-else>
@@ -21,6 +25,10 @@
             <img :src="getImageUrl(product.images[0])" v-if="product.images && product.images.length"
               :alt="product.name" @error="handleImageError" />
             <div v-else class="no-image">📷</div>
+
+            <span v-if="product.discount > 0" class="discount-badge">
+              -{{ product.discount }}%
+            </span>
           </div>
 
           <div class="product-info">
@@ -33,23 +41,28 @@
               <span class="label">Số lượng:</span>
               {{ product.quantity || 0 }}
             </p>
-            <p class="discount" v-if="product.discount > 0">
-              <span class="label">Giảm giá:</span>
-              {{ product.discount }}%
-            </p>
           </div>
 
-          <div class="actions">
+          <div v-if="isAdmin" class="actions admin-actions">
             <button @click="editProduct(product.id)" class="btn-edit">
-              ✏️ Sửa
+               Sửa
             </button>
             <button @click="deleteProduct(product.id)" class="btn-delete">
-              🗑️ Xóa
+               Xóa
             </button>
             <router-link :to="`/admin/products/detail/${product.id}`" class="btn-detail">
-              🔍 Xem chi tiết
+              Chi tiết
             </router-link>
+          </div>
 
+          <!-- Actions cho User -->
+          <div v-else class="actions user-actions">
+            <router-link :to="`/products/${product.id}`" class="btn-view">
+              Xem chi tiết
+            </router-link>
+            <button @click="addToCart(product)" class="btn-add-cart" :disabled="product.quantity === 0">
+              {{ ' Thêm vào giỏ'  }}
+            </button>
           </div>
         </div>
       </div>
@@ -71,20 +84,21 @@
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { auth } from '../store/auth'
+import { cart } from '../store/cart'
 
 const router = useRouter()
-
-// Base URL cho API
 const API_BASE_URL = 'http://localhost:3001'
 
 const products = ref([])
 const categories = ref([])
 const loading = ref(true)
-
 const currentPage = ref(1)
 const itemsPerPage = 6
 
-// Computed properties
+// Check if user is admin
+const isAdmin = computed(() => auth.isAdmin())
+
 const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
   return products.value.slice(start, start + itemsPerPage)
@@ -94,7 +108,6 @@ const totalPages = computed(() => {
   return Math.ceil(products.value.length / itemsPerPage)
 })
 
-// Pagination methods
 const nextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++
@@ -109,7 +122,6 @@ const prevPage = () => {
   }
 }
 
-// Load data khi component mount
 onMounted(async () => {
   await loadData()
 })
@@ -117,77 +129,65 @@ onMounted(async () => {
 const loadData = async () => {
   try {
     loading.value = true
-    console.log('📂 Đang tải dữ liệu từ:', API_BASE_URL)
-
     const [resProducts, resCategories] = await Promise.all([
       axios.get(`${API_BASE_URL}/products`),
       axios.get(`${API_BASE_URL}/categories`)
     ])
-
     products.value = resProducts.data
     categories.value = resCategories.data
-
-    console.log('✅ Đã tải', products.value.length, 'sản phẩm')
-    console.log('✅ Đã tải', categories.value.length, 'danh mục')
   } catch (err) {
     console.error('❌ Lỗi khi tải dữ liệu:', err)
-    alert('Không thể tải dữ liệu. Vui lòng kiểm tra:\n1. Server đã chạy chưa?\n2. URL có đúng không?')
+    alert('Không thể tải dữ liệu. Vui lòng kiểm tra server!')
   } finally {
     loading.value = false
   }
 }
 
-// Helper function để lấy URL ảnh
 const getImageUrl = (imagePath) => {
   if (!imagePath) return ''
   return imagePath.startsWith('http') ? imagePath : `${API_BASE_URL}${imagePath}`
 }
 
-// Handle lỗi khi ảnh không load được
 const handleImageError = (e) => {
-  e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120"%3E%3Crect fill="%23ddd" width="120" height="120"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-size="40"%3E📷%3C/text%3E%3C/svg%3E'
+  e.target.src = 'https://via.placeholder.com/300x200?text=No+Image'
 }
 
-// Lấy tên danh mục
 const getCategoryName = (id) => {
-  const cat = categories.value.find(c => c.id === id)
+  const cat = categories.value.find(c => String(c.id) === String(id))
   return cat ? cat.name : 'Không rõ'
 }
 
-// Xóa sản phẩm
+// Admin functions
 const deleteProduct = async (id) => {
-  if (!confirm('⚠️ Bạn có chắc chắn muốn xóa sản phẩm này?\nThao tác này không thể hoàn tác!')) return
+  if (!confirm('⚠️ Bạn có chắc chắn muốn xóa sản phẩm này?')) return
 
   try {
-    console.log('🗑️ Đang xóa sản phẩm:', id)
     await axios.delete(`${API_BASE_URL}/products/${id}`)
-
-    // Xóa khỏi danh sách local
     products.value = products.value.filter(p => String(p.id) !== String(id))
-
-    // Điều chỉnh trang hiện tại nếu cần
     if (paginatedProducts.value.length === 0 && currentPage.value > 1) {
       currentPage.value--
     }
-
-    console.log('✅ Đã xóa sản phẩm thành công')
     alert('✅ Đã xóa sản phẩm thành công!')
   } catch (err) {
-    console.error('❌ Lỗi khi xóa sản phẩm:', err)
-    alert('❌ Không thể xóa sản phẩm. Vui lòng thử lại!')
+    console.error('❌ Lỗi khi xóa:', err)
+    alert('❌ Không thể xóa sản phẩm!')
   }
 }
 
-// Chuyển đến trang sửa sản phẩm
 const editProduct = (id) => {
-  console.log('✏️ Chuyển đến trang sửa sản phẩm:', id)
   router.push(`/admin/products/edit/${id}`)
 }
 
-// Chuyển đến trang thêm sản phẩm
 const addProduct = () => {
-  console.log('➕ Chuyển đến trang thêm sản phẩm mới')
   router.push('/admin/products/add')
+}
+
+// User functions
+const addToCart = (product) => {
+  if (product.quantity === 0) return
+
+  cart.addItem(product, 1)
+  alert(`✅ Đã thêm "${product.name}" vào giỏ hàng!`)
 }
 </script>
 
@@ -284,6 +284,7 @@ const addProduct = () => {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
 }
 
 .product-image img {
@@ -295,6 +296,18 @@ const addProduct = () => {
 .no-image {
   font-size: 48px;
   color: #ccc;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e53935;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .product-info {
@@ -314,19 +327,11 @@ const addProduct = () => {
   margin: 6px 0;
   font-size: 14px;
   color: #666;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .label {
   font-weight: 500;
   color: #555;
-}
-
-.discount {
-  color: #dc3545;
-  font-weight: 600;
 }
 
 .actions {
@@ -336,8 +341,22 @@ const addProduct = () => {
   border-top: 1px solid #f0f0f0;
 }
 
-.actions button {
+.admin-actions {
+  flex-wrap: wrap;
+}
+
+.admin-actions button,
+.admin-actions a {
   flex: 1;
+  min-width: 80px;
+}
+
+.user-actions {
+  flex-direction: column;
+}
+
+.actions button,
+.actions a {
   padding: 8px 12px;
   font-size: 14px;
   border: none;
@@ -345,6 +364,9 @@ const addProduct = () => {
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
 }
 
 .btn-edit {
@@ -363,6 +385,39 @@ const addProduct = () => {
 
 .btn-delete:hover {
   background-color: #c82333;
+}
+
+.btn-detail {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-detail:hover {
+  background-color: #138496;
+}
+
+.btn-view {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-view:hover {
+  background-color: #5a6268;
+}
+
+.btn-add-cart {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-add-cart:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.btn-add-cart:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .pagination {
@@ -401,20 +456,4 @@ const addProduct = () => {
   color: #333;
   font-size: 15px;
 }
-.btn-detail {
-  background-color: #17a2b8;
-  color: white;
-  text-align: center;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background-color 0.2s;
-}
-
-.btn-detail:hover {
-  background-color: #138496;
-}
-
 </style>

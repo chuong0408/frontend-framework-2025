@@ -14,22 +14,22 @@ const logout = () => {
         <nav class="navbar">
             <div class="nav-left">
                 <router-link to="/admin/products" class="nav-brand">
-                    🏠 Trang quản trị
+                     Trang quản trị
                 </router-link>
 
                 <div v-if="auth.isAdmin()" class="nav-menu">
                     <router-link to="/admin/products" class="nav-link">
-                        📦 Sản phẩm
+                         Sản phẩm
                     </router-link>
                     <router-link to="/admin/users" class="nav-link">
-                        👥 Người dùng
+                         Người dùng
                     </router-link>
                 </div>
             </div>
 
             <div class="nav-right">
                 <router-link to="/profile" class="nav-link">
-                    <i class="icon-user">👤</i> Profile
+                    <i class="icon-user"></i> Profile
                 </router-link>
 
                 <div v-if="!auth.isAuthenticated" class="auth-buttons">
