@@ -4,61 +4,64 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const logout = () => {
-    auth.logout()
-    router.push('/login')
+  auth.logout()
+  router.push('/login')
 }
 </script>
 
 <template>
-    <div class="dashboard-wrapper">
-        <nav class="navbar">
-            <div class="nav-left">
-                <router-link to="/admin/products" class="nav-brand">
-                     Trang quản trị
-                </router-link>
+  <div class="dashboard-wrapper">
+    <nav class="navbar">
+      <div class="nav-left">
+        <router-link to="/admin/products" class="nav-brand">
+          Trang quản trị
+        </router-link>
 
-                <div v-if="auth.isAdmin()" class="nav-menu">
-                    <router-link to="/admin/products" class="nav-link">
-                         Sản phẩm
-                    </router-link>
-                    <router-link to="/admin/users" class="nav-link">
-                         Người dùng
-                    </router-link>
-                </div>
-            </div>
-
-            <div class="nav-right">
-                <router-link to="/profile" class="nav-link">
-                    <i class="icon-user"></i> Profile
-                </router-link>
-
-                <div v-if="!auth.isAuthenticated" class="auth-buttons">
-                    <router-link to="/register" class="btn btn-outline">
-                        Đăng ký
-                    </router-link>
-                    <router-link to="/login" class="btn btn-primary">
-                        Đăng nhập
-                    </router-link>
-                </div>
-
-                <div v-if="auth.isAuthenticated" class="user-section">
-                    <span class="user-info">
-                        Xin chào, <strong>{{ auth.user?.username }}</strong>
-                        <span class="user-role" v-if="auth.isAdmin()">
-                            (Admin)
-                        </span>
-                    </span>
-                    <button type="button" class="btn btn-logout" @click="logout">
-                        Đăng xuất
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <div class="content">
-            <router-view />
+        <div v-if="auth.isAdmin()" class="nav-menu">
+          <router-link to="/admin/products" class="nav-link">
+            Sản phẩm
+          </router-link>
+          <router-link to="/admin/orders" class="nav-link">
+            Đơn hàng
+          </router-link>
+          <router-link to="/admin/users" class="nav-link">
+            Người dùng
+          </router-link>
         </div>
+      </div>
+
+      <div class="nav-right">
+        <router-link to="/profile" class="nav-link">
+          <i class="icon-user"></i> Profile
+        </router-link>
+
+        <div v-if="!auth.isAuthenticated" class="auth-buttons">
+          <router-link to="/register" class="btn btn-outline">
+            Đăng ký
+          </router-link>
+          <router-link to="/login" class="btn btn-primary">
+            Đăng nhập
+          </router-link>
+        </div>
+
+        <div v-if="auth.isAuthenticated" class="user-section">
+          <span class="user-info">
+            Xin chào, <strong>{{ auth.user?.username }}</strong>
+            <span class="user-role" v-if="auth.isAdmin()">
+              (Admin)
+            </span>
+          </span>
+          <button type="button" class="btn btn-logout" @click="logout">
+            Đăng xuất
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="content">
+      <router-view />
     </div>
+  </div>
 </template>
 
 <style scoped>

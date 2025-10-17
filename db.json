@@ -62,26 +62,6 @@
       "updatedAt": "2025-10-13T07:17:16.175Z"
     },
     {
-      "id": "1760077759870",
-      "name": "vsavdbf",
-      "categoryId": 1,
-      "images": [
-        "/uploads/1760077759841-TÆ°á»£ng con giÃ¡p trong trang trÃ­ nhÃ .jpg",
-        "/uploads/1760077759851-Bá» 12 con giÃ¡p xáº¿p vÃ²ng trÃ²n.jpg",
-        "/uploads/1760077759863-Há»p Äá»±ng tÆ°á»£ng con giÃ¡p.jpg"
-      ]
-    },
-    {
-      "id": "1760080577907",
-      "name": "sdvasdvsdv",
-      "categoryId": 2,
-      "images": [
-        "/uploads/1760080577880-Bá» sÆ°u táº­p figure Cupoche.jpg",
-        "/uploads/1760080577900-Chi tiáº¿t figure Cupoche.jpg",
-        "/uploads/1760080577904-Má» há»p figure Cupoche.jpg"
-      ]
-    },
-    {
       "id": "p_1760300871808",
       "name": "Sản phẩm 5",
       "categoryId": 2,
@@ -108,6 +88,40 @@
         "/uploads/1760340806352-Lá»±a Chá»n Tá»§ TrÆ°ng BÃ y Figure.jpg"
       ],
       "createdAt": "2025-10-13T07:33:26.355Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "c4a4",
+      "orderCode": "ORD1760681131491",
+      "customer": {
+        "fullName": "huybmt",
+        "phone": "0933212096",
+        "email": "huy@gmail.com",
+        "address": "1254 ha huy tap, Quan binh thanh, hcm",
+        "userId": null
+      },
+      "items": [
+        {
+          "productId": "1760077668907",
+          "name": "111111",
+          "image": "/uploads/1760077668873-Bá» sÆ°u táº­p figure Cupoche.jpg",
+          "quantity": 4,
+          "price": 5125,
+          "total": 20500
+        }
+      ],
+      "payment": {
+        "method": "cod",
+        "subtotal": 20500,
+        "shipping": 0,
+        "discount": 0,
+        "total": 20500
+      },
+      "note": "",
+      "status": "pending",
+      "createdAt": "2025-10-17T06:05:31.491Z",
+      "updatedAt": "2025-10-17T06:05:31.491Z"
     }
   ],
   "comments": [

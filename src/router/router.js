@@ -6,6 +6,7 @@ import ProductList from '../components/ProductList.vue'
 import ProductForm from '../components/ProductForm.vue'
 import ProductDetail from '../components/ProductDetail.vue'
 import UserAdmin from '../components/UserAdmin.vue'
+import OrderAdmin from '../components/OrderAdmin.vue'
 import { auth } from '../store/auth'
 import Checkout from '../views/Checkout.vue'
 import Register from '../views/Register.vue'
@@ -57,7 +58,7 @@ const routes = [
     name: 'ProductDetailPublic',
     component: ProductDetail
   },
-  
+
   // Routes dành cho ADMIN
   {
     path: '/admin',
@@ -99,6 +100,12 @@ const routes = [
         path: 'users',
         component: UserAdmin,
         name: 'UserAdmin',
+        meta: { requiresAuth: true, requiresAdmin: true }
+      },
+      {
+        path: 'orders',
+        component: OrderAdmin,
+        name: 'OrderAdmin',
         meta: { requiresAuth: true, requiresAdmin: true }
       }
     ]
