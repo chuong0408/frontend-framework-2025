@@ -28,6 +28,11 @@ const logout = () => {
             Người dùng
           </router-link>
         </div>
+        <div v-if="auth.isAuthenticated && !auth.isAdmin()" class="nav-menu">
+          <router-link to="/my-orders" class="nav-link">
+            Đơn hàng của tôi
+          </router-link>
+        </div>
       </div>
 
       <div class="nav-right">

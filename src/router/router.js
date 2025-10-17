@@ -102,6 +102,13 @@ const routes = [
         name: 'UserAdmin',
         meta: { requiresAuth: true, requiresAdmin: true }
       },
+      // Thêm vào routes array
+      {
+        path: '/my-orders',
+        name: 'MyOrders',
+        component: () => import('../views/MyOrders.vue'),
+        meta: { requiresAuth: true } // Yêu cầu đăng nhập
+      },
       {
         path: 'orders',
         component: OrderAdmin,
