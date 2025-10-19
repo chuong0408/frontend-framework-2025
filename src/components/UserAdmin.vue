@@ -35,10 +35,10 @@
                             </td>
                             <td>
                                 <div class="actions">
-                                    <button @click="editUser(user)" class="btn-edit">✏️ Sửa</button>
+                                    <button @click="editUser(user)" class="btn-edit"> Sửa</button>
                                     <button @click="deleteUser(user.id)" class="btn-delete"
-                                        :disabled="user.role === 'admin' && user.id === currentUserId">
-                                        🗑️ Xóa
+                                        :disabled="user.role === 'admin'">
+                                         Xóa
                                     </button>
                                 </div>
                             </td>

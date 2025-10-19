@@ -122,6 +122,38 @@
       "status": "pending",
       "createdAt": "2025-10-17T06:05:31.491Z",
       "updatedAt": "2025-10-17T06:05:31.491Z"
+    },
+    {
+      "id": "02c8",
+      "orderCode": "ORD1760690153311",
+      "customer": {
+        "fullName": "huybmt",
+        "phone": "0933212096",
+        "email": "huy@gmail.com",
+        "address": "133, Binh thanh, hcm",
+        "userId": null
+      },
+      "items": [
+        {
+          "productId": "1760077668907",
+          "name": "111111",
+          "image": "/uploads/1760077668873-Bá» sÆ°u táº­p figure Cupoche.jpg",
+          "quantity": 7,
+          "price": 5125,
+          "total": 35875
+        }
+      ],
+      "payment": {
+        "method": "cod",
+        "subtotal": 35875,
+        "shipping": 0,
+        "discount": 0,
+        "total": 35875
+      },
+      "note": "",
+      "status": "pending",
+      "createdAt": "2025-10-17T08:35:53.311Z",
+      "updatedAt": "2025-10-17T08:35:53.312Z"
     }
   ],
   "comments": [

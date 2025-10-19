@@ -1,7 +1,7 @@
 <template>
   <div class="order-admin-container">
     <div class="header">
-      <h2>📦 Quản lý đơn hàng</h2>
+      <h2> Quản lý đơn hàng</h2>
       <div class="filter-group">
         <select v-model="filterStatus" @change="filterOrders" class="filter-select">
           <option value="">Tất cả trạng thái</option>

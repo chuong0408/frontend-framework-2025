@@ -102,7 +102,6 @@ const routes = [
         name: 'UserAdmin',
         meta: { requiresAuth: true, requiresAdmin: true }
       },
-      // Thêm vào routes array
       {
         path: '/my-orders',
         name: 'MyOrders',

@@ -83,7 +83,7 @@
                             </div>
                         </label>
 
-                        <label class="payment-option">
+                        <!-- <label class="payment-option">
                             <input type="radio" v-model="orderForm.paymentMethod" value="transfer" />
                             <div class="payment-card">
                                 <span class="payment-icon">🏦</span>
@@ -92,14 +92,10 @@
                                     <p>Chuyển khoản trước, giao hàng sau</p>
                                 </div>
                             </div>
-                        </label>
+                        </label> -->
                     </div>
                 </div>
 
-                <div class="section-card">
-                    <h3>📝 Ghi chú đơn hàng</h3>
-                    <textarea v-model="orderForm.note" rows="4" placeholder="Ghi chú về đơn hàng (tùy chọn)"></textarea>
-                </div>
             </div>
 
             <div class="order-summary">
@@ -369,8 +365,8 @@ const placeOrder = async () => {
             router.push('/')
         }
     } catch (error) {
-        console.error('❌ Lỗi đặt hàng:', error)
-        alert('❌ Có lỗi xảy ra. Vui lòng thử lại!')
+        console.error(' Lỗi đặt hàng:', error)
+        alert(' Có lỗi xảy ra. Vui lòng thử lại!')
     } finally {
         loading.value = false
     }
