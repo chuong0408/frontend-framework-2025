@@ -8,9 +8,11 @@
 
       <div class="nav-menu">
         <router-link to="/products" class="nav-link">
-           Sản phẩm
+          Sản phẩm
         </router-link>
-
+        <router-link v-if="auth.isAuthenticated" to="/favorites" class="nav-link">
+        Yêu thích
+        </router-link>
         <router-link to="/cart" class="nav-link cart-link">
           Giỏ hàng
           <span v-if="cart.totalItems > 0" class="cart-badge">
@@ -35,7 +37,7 @@
           </router-link>
 
           <router-link v-if="auth.isAdmin()" to="/admin/products" class="nav-link admin-link">
-             Quản trị
+            Quản trị
           </router-link>
 
           <button @click="logout" class="btn btn-logout">

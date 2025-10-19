@@ -14,30 +14,37 @@ const logout = () => {
     <nav class="navbar">
       <div class="nav-left">
         <router-link to="/admin/products" class="nav-brand">
-          Trang quản trị
+          🏪 Trang quản trị
         </router-link>
 
         <div v-if="auth.isAdmin()" class="nav-menu">
           <router-link to="/admin/products" class="nav-link">
-            Sản phẩm
+            📦 Sản phẩm
           </router-link>
           <router-link to="/admin/orders" class="nav-link">
-            Đơn hàng
+            🛒 Đơn hàng
           </router-link>
           <router-link to="/admin/users" class="nav-link">
-            Người dùng
+            👥 Người dùng
+          </router-link>
+          <!-- 🆕 Menu mới -->
+          <router-link to="/admin/customers" class="nav-link">
+            📊 Khách hàng
+          </router-link>
+          <router-link to="/admin/reports" class="nav-link">
+            📈 Báo cáo
           </router-link>
         </div>
         <div v-if="auth.isAuthenticated && !auth.isAdmin()" class="nav-menu">
           <router-link to="/my-orders" class="nav-link">
-            Đơn hàng của tôi
+            📦 Đơn hàng của tôi
           </router-link>
         </div>
       </div>
 
       <div class="nav-right">
         <router-link to="/profile" class="nav-link">
-          <i class="icon-user"></i> Profile
+          👤 Profile
         </router-link>
 
         <div v-if="!auth.isAuthenticated" class="auth-buttons">
@@ -57,7 +64,7 @@ const logout = () => {
             </span>
           </span>
           <button type="button" class="btn btn-logout" @click="logout">
-            Đăng xuất
+            🚪 Đăng xuất
           </button>
         </div>
       </div>
@@ -111,6 +118,7 @@ const logout = () => {
 .nav-menu {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .nav-link {
@@ -123,6 +131,7 @@ const logout = () => {
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -209,10 +218,6 @@ const logout = () => {
   font-size: 11px;
   font-weight: 600;
   margin-left: 6px;
-}
-
-.icon-user {
-  margin-right: 4px;
 }
 
 .content {

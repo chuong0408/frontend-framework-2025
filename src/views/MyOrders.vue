@@ -77,7 +77,7 @@
           </div>
         </div>
 
-        <!-- Footer: Tổng tiền + Nút xem chi tiết -->
+        <!-- Footer: Tổng tiền + Nút actions -->
         <div class="order-footer">
           <div class="order-total">
             <span>Tổng cộng:</span>
@@ -85,12 +85,25 @@
               {{ formatPrice(order.payment.total) }}₫
             </strong>
           </div>
-          <button 
-            @click="viewOrderDetail(order)" 
-            class="btn-detail"
-          >
-            Xem chi tiết
-          </button>
+          
+          <div class="order-actions">
+            <button 
+              @click="viewOrderDetail(order)" 
+              class="btn-detail"
+            >
+              Chi tiết
+            </button>
+            
+            <!-- 🆕 Nút mua lại -->
+            <button 
+              v-if="order.status === 'delivered'"
+              @click="reorder(order)" 
+              class="btn-reorder"
+              :disabled="reordering"
+            >
+              {{ reordering ? '⏳' : '🔄' }} Mua lại
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -218,14 +231,18 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { auth } from '../store/auth'
+import { cart } from '../store/cart'
 import axios from 'axios'
 
+const router = useRouter()
 const API_BASE_URL = 'http://localhost:3001'
 
 // State
 const orders = ref([])
 const loading = ref(true)
+const reordering = ref(false)
 const filterStatus = ref('')
 const selectedOrder = ref(null)
 const showDetailModal = ref(false)
@@ -240,19 +257,24 @@ const filteredOrders = computed(() => {
 const loadOrders = async () => {
   try {
     loading.value = true
-    // Lấy đơn hàng của user hiện tại
     const userId = auth.user?.id
-    const response = await axios.get(
-      `${API_BASE_URL}/orders?customer.userId=${userId}&_sort=createdAt&_order=desc`
+    
+    // Lấy tất cả đơn hàng
+    const response = await axios.get(`${API_BASE_URL}/orders?_sort=createdAt&_order=desc`)
+    
+    // Lọc đơn hàng theo email của user hiện tại
+    const userEmail = auth.user?.email
+    orders.value = response.data.filter(order => 
+      order.customer.email === userEmail
     )
-    orders.value = response.data
   } catch (error) {
-    console.error(' Lỗi tải đơn hàng:', error)
+    console.error('❌ Lỗi tải đơn hàng:', error)
     alert('Không thể tải danh sách đơn hàng')
   } finally {
     loading.value = false
   }
 }
+
 const getStatusText = (status) => {
   const statusMap = {
     pending: 'Chờ xác nhận',
@@ -263,30 +285,116 @@ const getStatusText = (status) => {
   }
   return statusMap[status] || status
 }
+
+const getStatusColor = (status) => {
+  const colorMap = {
+    pending: '#ffc107',
+    confirmed: '#17a2b8',
+    shipping: '#007bff',
+    delivered: '#28a745',
+    cancelled: '#dc3545'
+  }
+  return colorMap[status] || '#6c757d'
+}
+
 const viewOrderDetail = (order) => {
   selectedOrder.value = order
   showDetailModal.value = true
 }
+
 const closeModal = () => {
   showDetailModal.value = false
   selectedOrder.value = null
 }
-// ... (copy các methods khác từ artifact)
-const reorder = async (order) => {
-  if (!confirm('Bạn muốn mua lại đơn hàng này?')) return
-  
-  // Xóa giỏ hàng cũ
-  cart.clearCart()
-  
-  // Thêm lại sản phẩm
-  for (const item of order.items) {
-    const product = await loadProduct(item.productId)
-    if (product && product.quantity > 0) {
-      cart.addItem(product, item.quantity)
-    }
+
+// 🆕 Hàm load sản phẩm
+const loadProduct = async (productId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/products/${productId}`)
+    return response.data
+  } catch (error) {
+    console.error('Lỗi load sản phẩm:', error)
+    return null
   }
+}
+
+// 🆕 Hàm mua lại đơn hàng
+const reorder = async (order) => {
+  if (!confirm('🔄 Bạn muốn mua lại tất cả sản phẩm trong đơn hàng này?')) return
   
-  router.push('/cart')
+  try {
+    reordering.value = true
+    let addedCount = 0
+    let outOfStockProducts = []
+    
+    // Kiểm tra và thêm từng sản phẩm vào giỏ
+    for (const item of order.items) {
+      const product = await loadProduct(item.productId)
+      
+      if (!product) {
+        console.warn(`Sản phẩm ${item.name} không tồn tại`)
+        outOfStockProducts.push(`${item.name} (không còn bán)`)
+        continue
+      }
+      
+      if (product.quantity === 0) {
+        outOfStockProducts.push(`${item.name} (hết hàng)`)
+        continue
+      }
+      
+      // Kiểm tra số lượng còn đủ không
+      const quantityToAdd = Math.min(item.quantity, product.quantity)
+      
+      if (quantityToAdd < item.quantity) {
+        outOfStockProducts.push(`${item.name} (chỉ còn ${product.quantity})`)
+      }
+      
+      cart.addItem(product, quantityToAdd)
+      addedCount++
+    }
+    
+    // Thông báo kết quả
+    let message = `✅ Đã thêm ${addedCount} sản phẩm vào giỏ hàng!`
+    
+    if (outOfStockProducts.length > 0) {
+      message += `\n\n⚠️ Một số sản phẩm không thể thêm:\n• ${outOfStockProducts.join('\n• ')}`
+    }
+    
+    alert(message)
+    
+    // Chuyển đến giỏ hàng
+    router.push('/cart')
+    
+  } catch (error) {
+    console.error('❌ Lỗi mua lại đơn hàng:', error)
+    alert('Có lỗi xảy ra. Vui lòng thử lại!')
+  } finally {
+    reordering.value = false
+  }
+}
+
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price || 0)
+}
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleString('vi-VN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return ''
+  return imagePath.startsWith('http') ? imagePath : `${API_BASE_URL}${imagePath}`
+}
+
+const handleImageError = (e) => {
+  e.target.src = 'https://via.placeholder.com/80x80?text=No+Image'
 }
 
 onMounted(() => {
@@ -299,7 +407,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 .my-orders-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -394,7 +501,6 @@ onMounted(() => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Header của mỗi đơn hàng */
 .order-header {
   display: flex;
   justify-content: space-between;
@@ -423,7 +529,6 @@ onMounted(() => {
   font-weight: 600;
 }
 
-/* Danh sách sản phẩm */
 .order-items {
   margin-bottom: 20px;
 }
@@ -477,7 +582,6 @@ onMounted(() => {
   margin-top: 10px;
 }
 
-/* Footer của mỗi đơn hàng */
 .order-footer {
   display: flex;
   justify-content: space-between;
@@ -503,22 +607,47 @@ onMounted(() => {
   font-weight: 700;
 }
 
-.btn-detail {
+.order-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-detail,
+.btn-reorder {
   padding: 10px 20px;
-  background: #007bff;
-  color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+}
+
+.btn-detail {
+  background: #007bff;
+  color: white;
 }
 
 .btn-detail:hover {
   background-color: #0056b3;
 }
 
+.btn-reorder {
+  background: #28a745;
+  color: white;
+}
+
+.btn-reorder:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.btn-reorder:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -579,7 +708,6 @@ onMounted(() => {
   padding: 20px;
 }
 
-/* Các section trong modal */
 .detail-section {
   margin-bottom: 25px;
   padding-bottom: 20px;
@@ -624,7 +752,6 @@ onMounted(() => {
   font-size: 14px;
 }
 
-/* Danh sách sản phẩm trong modal */
 .products-list {
   display: flex;
   flex-direction: column;
@@ -672,7 +799,6 @@ onMounted(() => {
   font-weight: 600;
 }
 
-/* Thanh toán */
 .payment-summary {
   background-color: #f8f9fa;
   padding: 15px;
@@ -718,8 +844,19 @@ onMounted(() => {
     width: 100%;
   }
 
-  .order-item {
-    flex-wrap: wrap;
+  .order-footer {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .order-actions {
+    width: 100%;
+  }
+
+  .btn-detail,
+  .btn-reorder {
+    flex: 1;
   }
 
   .detail-grid {

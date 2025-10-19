@@ -119,9 +119,9 @@
         "total": 20500
       },
       "note": "",
-      "status": "pending",
+      "status": "delivered",
       "createdAt": "2025-10-17T06:05:31.491Z",
-      "updatedAt": "2025-10-17T06:05:31.491Z"
+      "updatedAt": "2025-10-19T16:47:55.886Z"
     },
     {
       "id": "02c8",
@@ -158,16 +158,16 @@
   ],
   "favorites": [],
   "reviews": [
-  {
-    "id": "1",
-    "productId": "p_123",
-    "userId": "user_1",
-    "userName": "Nguyễn Văn A",
-    "rating": 5,
-    "comment": "Sản phẩm rất tốt!",
-    "createdAt": "2025-01-15T10:30:00Z"
-  }
-],
+    {
+      "id": "1",
+      "productId": "p_123",
+      "userId": "user_1",
+      "userName": "Nguyễn Văn A",
+      "rating": 5,
+      "comment": "Sản phẩm rất tốt!",
+      "createdAt": "2025-01-15T10:30:00Z"
+    }
+  ],
   "comments": [
     {
       "id": "1",

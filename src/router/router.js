@@ -58,6 +58,19 @@ const routes = [
     name: 'ProductDetailPublic',
     component: ProductDetail
   },
+  // 🆕 Yêu thích
+  {
+    path: '/favorites',
+    name: 'Favorites',
+    component: () => import('../views/Favorites.vue'),
+    meta: { requiresAuth: true }
+  },
+  // 🆕 Lọc sản phẩm
+  {
+    path: '/products/filter',
+    name: 'ProductFilter',
+    component: () => import('../components/ProductFilter.vue')
+  },
 
   // Routes dành cho ADMIN
   {
@@ -103,18 +116,33 @@ const routes = [
         meta: { requiresAuth: true, requiresAdmin: true }
       },
       {
-        path: '/my-orders',
-        name: 'MyOrders',
-        component: () => import('../views/MyOrders.vue'),
-        meta: { requiresAuth: true } // Yêu cầu đăng nhập
-      },
-      {
         path: 'orders',
         component: OrderAdmin,
         name: 'OrderAdmin',
         meta: { requiresAuth: true, requiresAdmin: true }
+      },
+      // 🆕 Thống kê khách hàng
+      {
+        path: 'customers',
+        name: 'CustomerStats',
+        component: () => import('../components/CustomerStats.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
+      },
+      // 🆕 Báo cáo
+      {
+        path: 'reports',
+        name: 'Reports',
+        component: () => import('../views/Reports.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
       }
     ]
+  },
+  // Đơn hàng của user
+  {
+    path: '/my-orders',
+    name: 'MyOrders',
+    component: () => import('../views/MyOrders.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 

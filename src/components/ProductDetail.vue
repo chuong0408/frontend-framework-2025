@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import { auth } from '../store/auth'
 import { cart } from '../store/cart'
+import { favorites } from '../store/favorites'
+import ProductReviews from './ProductReviews.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -106,22 +108,37 @@ const loadData = async () => {
   }
 }
 
-  const loadProductDetail = async () => {
-    try {
-      const id = route.params.id
-      const response = await axios.get(`${API_BASE_URL}/products/${id}`)
-      product.value = response.data
-      selectedImage.value = product.value.images?.[0] || ''
-      quantity.value = 1
+const loadProductDetail = async () => {
+  try {
+    const id = route.params.id
+    const response = await axios.get(`${API_BASE_URL}/products/${id}`)
+    product.value = response.data
+    selectedImage.value = product.value.images?.[0] || ''
+    quantity.value = 1
 
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } catch (error) {
-      console.error(' Lỗi tải sản phẩm:', error)
-      product.value = null
-    } finally {
-      loading.value = false
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } catch (error) {
+    console.error(' Lỗi tải sản phẩm:', error)
+    product.value = null
+  } finally {
+    loading.value = false
   }
+}
+const isFavorite = computed(() => {
+  return product.value ? favorites.isFavorite(product.value.id) : false
+})
+
+const toggleFavorite = () => {
+  if (!product.value) return
+
+  favorites.toggle(product.value.id)
+
+  if (favorites.isFavorite(product.value.id)) {
+    alert(' Đã thêm vào danh sách yêu thích!')
+  } else {
+    alert(' Đã xóa khỏi danh sách yêu thích!')
+  }
+}
 </script>
 <template>
   <div class="container">
@@ -142,6 +159,13 @@ const loadData = async () => {
       </div>
 
       <div class="product-info">
+        <div class="product-header">
+          <h3>{{ product.name }}</h3>
+          <button v-if="!isAdmin" @click="toggleFavorite" :class="['btn-favorite', { active: isFavorite }]"
+            :title="isFavorite ? 'Bỏ yêu thích' : 'Yêu thích'">
+            {{ isFavorite ? '❤️' : '🤍' }}
+          </button>
+        </div>
         <p><strong>Tên sản phẩm:</strong> {{ product.name }}</p>
         <p><strong>Danh mục:</strong> {{ getCategoryName(product.categoryId) }}</p>
         <p class="quantity">
@@ -191,7 +215,7 @@ const loadData = async () => {
     <div v-else>
       <p> Không tìm thấy sản phẩm hoặc có lỗi khi tải dữ liệu.</p>
     </div>
-
+    <ProductReviews v-if="product" :productId="product.id" />
     <div v-if="!isAdmin && relatedProducts.length > 0" class="related-products">
       <h3> Sản phẩm liên quan</h3>
 
@@ -586,6 +610,49 @@ h2 {
 
   .related-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.btn-favorite {
+  background: white;
+  border: 2px solid #ddd;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-favorite:hover {
+  transform: scale(1.1);
+  border-color: #e53935;
+}
+
+.btn-favorite.active {
+  border-color: #e53935;
+  animation: heartbeat 0.3s;
+}
+
+@keyframes heartbeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
   }
 }
 </style>
