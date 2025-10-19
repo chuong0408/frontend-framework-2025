@@ -156,6 +156,18 @@
       "updatedAt": "2025-10-17T08:35:53.312Z"
     }
   ],
+  "favorites": [],
+  "reviews": [
+  {
+    "id": "1",
+    "productId": "p_123",
+    "userId": "user_1",
+    "userName": "Nguyễn Văn A",
+    "rating": 5,
+    "comment": "Sản phẩm rất tốt!",
+    "createdAt": "2025-01-15T10:30:00Z"
+  }
+],
   "comments": [
     {
       "id": "1",

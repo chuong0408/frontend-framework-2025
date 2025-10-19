@@ -272,6 +272,22 @@ const closeModal = () => {
   selectedOrder.value = null
 }
 // ... (copy các methods khác từ artifact)
+const reorder = async (order) => {
+  if (!confirm('Bạn muốn mua lại đơn hàng này?')) return
+  
+  // Xóa giỏ hàng cũ
+  cart.clearCart()
+  
+  // Thêm lại sản phẩm
+  for (const item of order.items) {
+    const product = await loadProduct(item.productId)
+    if (product && product.quantity > 0) {
+      cart.addItem(product, item.quantity)
+    }
+  }
+  
+  router.push('/cart')
+}
 
 onMounted(() => {
   if (!auth.isAuthenticated) {

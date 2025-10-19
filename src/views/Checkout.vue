@@ -307,70 +307,94 @@ const applyDiscount = () => {
     }
 }
 
-const placeOrder = async () => {
-    if (!validateForm()) {
-        alert('⚠️ Vui lòng điền đầy đủ thông tin!')
-        return
-    }
-
-    if (!orderForm.paymentMethod) {
-        alert('⚠️ Vui lòng chọn phương thức thanh toán!')
-        return
-    }
-
-    loading.value = true
-
-    try {
-        const order = {
-            orderCode: 'ORD' + Date.now(),
-            customer: {
-                fullName: orderForm.fullName,
-                phone: orderForm.phone,
-                email: orderForm.email,
-                address: `${orderForm.address}, ${orderForm.district}, ${orderForm.city}`,
-                userId: auth.user?.id || null
-            },
-            items: cart.items.map(item => ({
-                productId: item.id,
-                name: item.name,
-                image: item.image,
-                quantity: item.quantity,
-                price: item.discount,
-                total: item.discount * item.quantity
-            })),
-            payment: {
-                method: orderForm.paymentMethod,
-                subtotal: cart.totalPrice,
-                shipping: shippingFee.value,
-                discount: discountAmount.value,
-                total: totalAmount.value
-            },
-            note: orderForm.note,
-            status: 'pending',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        }
-
-        console.log('📦 Đang lưu đơn hàng:', order)
-
-        const response = await axios.post(`${API_BASE_URL}/orders`, order)
-
-        if (response.status === 201) {
-            console.log('✅ Đơn hàng đã được lưu:', response.data)
-
-            cart.clearCart()
-
-            alert(`✅ Đặt hàng thành công!\n\nMã đơn hàng: ${order.orderCode}\nTổng tiền: ${formatPrice(totalAmount.value)}₫\n\nCảm ơn bạn đã mua hàng!`)
-
-            router.push('/')
-        }
-    } catch (error) {
-        console.error(' Lỗi đặt hàng:', error)
-        alert(' Có lỗi xảy ra. Vui lòng thử lại!')
-    } finally {
-        loading.value = false
-    }
+const loadProduct = async (id) => {
+  const res = await axios.get(`${API_BASE_URL}/products/${id}`)
+  return res.data
 }
+
+const updateProduct = async (id, data) => {
+  await axios.put(`${API_BASE_URL}/products/${id}`, data)
+}
+
+const placeOrder = async () => {
+  if (!validateForm()) {
+    alert('⚠️ Vui lòng điền đầy đủ thông tin!')
+    return
+  }
+
+  if (!orderForm.paymentMethod) {
+    alert('⚠️ Vui lòng chọn phương thức thanh toán!')
+    return
+  }
+
+  loading.value = true
+
+  try {
+    // 🔍 Kiểm tra tồn kho
+    for (const item of cart.items) {
+      const product = await loadProduct(item.id)
+      if (product.quantity < item.quantity) {
+        alert(`❌ Sản phẩm "${product.name}" không đủ số lượng!`)
+        loading.value = false
+        return
+      }
+    }
+
+    // 🧾 Tạo đơn hàng
+    const order = {
+      orderCode: 'ORD' + Date.now(),
+      customer: {
+        fullName: orderForm.fullName,
+        phone: orderForm.phone,
+        email: orderForm.email,
+        address: `${orderForm.address}, ${orderForm.district}, ${orderForm.city}`,
+        userId: auth.user?.id || null
+      },
+      items: cart.items.map(item => ({
+        productId: item.id,
+        name: item.name,
+        image: item.image,
+        quantity: item.quantity,
+        price: item.discount,
+        total: item.discount * item.quantity
+      })),
+      payment: {
+        method: orderForm.paymentMethod,
+        subtotal: cart.totalPrice,
+        shipping: shippingFee.value,
+        discount: discountAmount.value,
+        total: totalAmount.value
+      },
+      note: orderForm.note,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/orders`, order)
+
+    // ✅ Trừ tồn kho
+    for (const item of cart.items) {
+      const product = await loadProduct(item.id)
+      await updateProduct(item.id, {
+        ...product,
+        quantity: product.quantity - item.quantity
+      })
+    }
+
+    cart.clearCart()
+
+    alert(`✅ Đặt hàng thành công!\n\nMã đơn hàng: ${order.orderCode}\nTổng tiền: ${formatPrice(totalAmount.value)}₫\n\nCảm ơn bạn đã mua hàng!`)
+    router.push('/')
+  } catch (error) {
+    console.error('❌ Lỗi đặt hàng:', error)
+    alert('Có lỗi xảy ra. Vui lòng thử lại!')
+  } finally {
+    loading.value = false
+  }
+}
+
+
 </script>
 
 <style scoped>
