@@ -11,9 +11,8 @@
       </div>
     </div>
 
-    <!-- Form đánh giá -->
     <div v-if="canReview" class="review-form">
-      <h4>✍️ Viết đánh giá của bạn</h4>
+      <h4> Viết đánh giá của bạn</h4>
       
       <div class="rating-input">
         <label>Chọn số sao:</label>
@@ -47,7 +46,6 @@
       <p>Vui lòng <router-link to="/login">đăng nhập</router-link> để đánh giá sản phẩm</p>
     </div>
 
-    <!-- Danh sách đánh giá -->
     <div class="reviews-list">
       <div v-if="reviews.length === 0" class="no-reviews">
         <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
@@ -145,13 +143,11 @@ const submitReview = async () => {
     
     alert('✅ Cảm ơn bạn đã đánh giá!')
     
-    // Reset form
     newReview.value = {
       rating: 5,
       comment: ''
     }
     
-    // Reload reviews
     await loadReviews()
   } catch (error) {
     console.error('Lỗi gửi đánh giá:', error)

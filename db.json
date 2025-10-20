@@ -166,6 +166,14 @@
       "rating": 5,
       "comment": "Sản phẩm rất tốt!",
       "createdAt": "2025-01-15T10:30:00Z"
+    },
+    {
+      "id": "8b27",
+      "productId": "1760077668907",
+      "userName": "huybmt",
+      "rating": 5,
+      "comment": "scscs",
+      "createdAt": "2025-10-19T20:43:13.876Z"
     }
   ],
   "comments": [
