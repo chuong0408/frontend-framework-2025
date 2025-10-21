@@ -1,21 +1,21 @@
 <template>
     <div class="filter-container">
-        <h2>🔍 Lọc & Tìm kiếm sản phẩm</h2>
+        <h2> Lọc & Tìm kiếm sản phẩm</h2>
 
         <!-- Filter Panel -->
         <div class="filter-panel">
             <!-- Search Bar -->
             <div class="search-section">
-                <input type="text" v-model="filters.searchText" placeholder="🔍 Tìm kiếm sản phẩm..."
+                <input type="text" v-model="filters.searchText" placeholder=" Tìm kiếm sản phẩm..."
                     class="search-input" />
-                <button @click="resetFilters" class="btn-reset">🔄 Đặt lại</button>
+                <button @click="resetFilters" class="btn-reset"> Đặt lại</button>
             </div>
 
             <!-- Filter Grid -->
             <div class="filter-grid">
                 <!-- Danh mục -->
                 <div class="filter-group">
-                    <label>📂 Danh mục</label>
+                    <label> Danh mục</label>
                     <select v-model="filters.categoryId">
                         <option value="">Tất cả danh mục</option>
                         <option v-for="cat in categories" :key="cat.id" :value="cat.id">
@@ -24,32 +24,8 @@
                     </select>
                 </div>
 
-                <!-- Giá từ -->
-                <div class="filter-group">
-                    <label>💰 Giá từ</label>
-                    <input type="number" v-model.number="filters.minPrice" placeholder="0" min="0" />
-                </div>
-
-                <!-- Giá đến -->
-                <div class="filter-group">
-                    <label>💰 Giá đến</label>
-                    <input type="number" v-model.number="filters.maxPrice" placeholder="1,000,000" min="0" />
-                </div>
-
-                <!-- Tồn kho tối thiểu -->
-                <div class="filter-group">
-                    <label>📦 Tồn kho tối thiểu</label>
-                    <input type="number" v-model.number="filters.minStock" placeholder="0" min="0" />
-                </div>
-
-                <!-- Giảm giá tối thiểu -->
-                <div class="filter-group">
-                    <label>🏷️ Giảm giá tối thiểu (%)</label>
-                    <input type="number" v-model.number="filters.minDiscount" placeholder="0" min="0" max="100" />
-                </div>
-
                 <!-- Sắp xếp -->
-                <div class="filter-group">
+                <!-- <div class="filter-group">
                     <label>📊 Sắp xếp theo</label>
                     <select v-model="filters.sortBy">
                         <option value="name-asc">Tên A-Z</option>
@@ -62,81 +38,27 @@
                         <option value="newest">Mới nhất</option>
                         <option value="oldest">Cũ nhất</option>
                     </select>
-                </div>
+                </div> -->
             </div>
 
             <!-- Quick Filters -->
             <div class="quick-filters">
                 <label class="checkbox-label">
                     <input type="checkbox" v-model="filters.inStock" />
-                    <span>✅ Chỉ hiện còn hàng</span>
+                    <span> Còn hàng</span>
                 </label>
 
                 <label class="checkbox-label">
                     <input type="checkbox" v-model="filters.hasDiscount" />
-                    <span>🏷️ Đang giảm giá</span>
+                    <span> Đang giảm giá</span>
                 </label>
 
                 <label class="checkbox-label">
                     <input type="checkbox" v-model="filters.lowStock" />
-                    <span>⚠️ Sắp hết hàng (≤10)</span>
+                    <span>Sắp hết hàng (≤10)</span>
                 </label>
             </div>
 
-            <!-- Active Filters Tags -->
-            <div v-if="activeFiltersCount > 0" class="active-filters">
-                <span class="filter-label">Bộ lọc đang áp dụng ({{ activeFiltersCount }}):</span>
-
-                <span v-if="filters.categoryId" class="filter-tag">
-                    {{ getCategoryName(filters.categoryId) }}
-                    <button @click="filters.categoryId = ''">&times;</button>
-                </span>
-
-                <span v-if="filters.minPrice" class="filter-tag">
-                    Giá từ {{ formatPrice(filters.minPrice) }}₫
-                    <button @click="filters.minPrice = null">&times;</button>
-                </span>
-
-                <span v-if="filters.maxPrice" class="filter-tag">
-                    Giá đến {{ formatPrice(filters.maxPrice) }}₫
-                    <button @click="filters.maxPrice = null">&times;</button>
-                </span>
-
-                <span v-if="filters.minStock" class="filter-tag">
-                    Tồn kho ≥ {{ filters.minStock }}
-                    <button @click="filters.minStock = null">&times;</button>
-                </span>
-
-                <span v-if="filters.minDiscount" class="filter-tag">
-                    Giảm giá ≥ {{ filters.minDiscount }}%
-                    <button @click="filters.minDiscount = null">&times;</button>
-                </span>
-
-                <span v-if="filters.inStock" class="filter-tag">
-                    Còn hàng
-                    <button @click="filters.inStock = false">&times;</button>
-                </span>
-
-                <span v-if="filters.hasDiscount" class="filter-tag">
-                    Đang giảm giá
-                    <button @click="filters.hasDiscount = false">&times;</button>
-                </span>
-
-                <span v-if="filters.lowStock" class="filter-tag">
-                    Sắp hết hàng
-                    <button @click="filters.lowStock = false">&times;</button>
-                </span>
-
-                <button @click="resetFilters" class="btn-clear-all">Xóa tất cả</button>
-            </div>
-
-            <!-- Result Count -->
-            <div class="result-summary">
-                <strong>{{ filteredProducts.length }}</strong> sản phẩm được tìm thấy
-                <span v-if="products.length > 0">
-                    / {{ products.length }} tổng số
-                </span>
-            </div>
         </div>
 
         <!-- Loading State -->

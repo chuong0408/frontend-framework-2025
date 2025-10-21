@@ -1,6 +1,6 @@
 <template>
   <div class="favorites-container">
-    <h2>❤️ Sản phẩm yêu thích</h2>
+    <h2> Sản phẩm yêu thích</h2>
 
     <div v-if="loading" class="loading">
       <p>⏳ Đang tải...</p>

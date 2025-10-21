@@ -300,9 +300,9 @@ const applyDiscount = () => {
         } else {
             discountAmount.value = (cart.totalPrice * discounts[code]) / 100
         }
-        alert(`✅ Đã áp dụng mã giảm giá "${code}" thành công!`)
+        alert(` Đã áp dụng mã giảm giá "${code}" thành công!`)
     } else {
-        alert('❌ Mã giảm giá không hợp lệ')
+        alert(' Mã giảm giá không hợp lệ')
         discountAmount.value = 0
     }
 }
@@ -318,19 +318,18 @@ const updateProduct = async (id, data) => {
 
 const placeOrder = async () => {
   if (!validateForm()) {
-    alert('⚠️ Vui lòng điền đầy đủ thông tin!')
+    alert(' Vui lòng điền đầy đủ thông tin!')
     return
   }
 
   if (!orderForm.paymentMethod) {
-    alert('⚠️ Vui lòng chọn phương thức thanh toán!')
+    alert(' Vui lòng chọn phương thức thanh toán!')
     return
   }
 
   loading.value = true
 
   try {
-    // 🔍 Kiểm tra tồn kho
     for (const item of cart.items) {
       const product = await loadProduct(item.id)
       if (product.quantity < item.quantity) {
@@ -339,8 +338,6 @@ const placeOrder = async () => {
         return
       }
     }
-
-    // 🧾 Tạo đơn hàng
     const order = {
       orderCode: 'ORD' + Date.now(),
       customer: {
@@ -373,7 +370,6 @@ const placeOrder = async () => {
 
     const response = await axios.post(`${API_BASE_URL}/orders`, order)
 
-    // ✅ Trừ tồn kho
     for (const item of cart.items) {
       const product = await loadProduct(item.id)
       await updateProduct(item.id, {
@@ -384,10 +380,10 @@ const placeOrder = async () => {
 
     cart.clearCart()
 
-    alert(`✅ Đặt hàng thành công!\n\nMã đơn hàng: ${order.orderCode}\nTổng tiền: ${formatPrice(totalAmount.value)}₫\n\nCảm ơn bạn đã mua hàng!`)
+    alert(` Đặt hàng thành công!\n\nMã đơn hàng: ${order.orderCode}\nTổng tiền: ${formatPrice(totalAmount.value)}₫\n\nCảm ơn bạn đã mua hàng!`)
     router.push('/')
   } catch (error) {
-    console.error('❌ Lỗi đặt hàng:', error)
+    console.error(' Lỗi đặt hàng:', error)
     alert('Có lỗi xảy ra. Vui lòng thử lại!')
   } finally {
     loading.value = false

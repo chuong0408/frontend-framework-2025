@@ -10,6 +10,7 @@ import OrderAdmin from '../components/OrderAdmin.vue'
 import { auth } from '../store/auth'
 import Checkout from '../views/Checkout.vue'
 import Register from '../views/Register.vue'
+import ProductFilter from '../components/ProductFilter.vue'
 
 const routes = [
   // Trang chủ
@@ -50,7 +51,7 @@ const routes = [
   {
     path: '/products',
     name: 'ProductsPublic',
-    component: ProductList
+    component: ProductFilter
   },
   // Chi tiết sản phẩm (dùng chung)
   {

@@ -1,6 +1,6 @@
 <template>
   <div class="cart-container">
-    <h2>🛒 Giỏ hàng của bạn</h2>
+    <h2> Giỏ hàng của bạn</h2>
 
     <div v-if="cart.items.length === 0" class="empty-cart">
       <div class="empty-icon">🛍️</div>

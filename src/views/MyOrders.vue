@@ -1,8 +1,7 @@
 <template>
   <div class="my-orders-container">
-    <!-- Header: Tiêu đề + Bộ lọc -->
     <div class="header">
-      <h2>📦 Đơn hàng của tôi</h2>
+      <h2> Đơn hàng của tôi</h2>
       
       <select v-model="filterStatus" class="filter-select">
         <option value="">Tất cả trạng thái</option>
@@ -14,12 +13,10 @@
       </select>
     </div>
 
-    <!-- Loading -->
     <div v-if="loading" class="loading">
       <p>⏳ Đang tải đơn hàng...</p>
     </div>
 
-    <!-- Trống - Chưa có đơn hàng -->
     <div v-else-if="filteredOrders.length === 0" class="empty-state">
       <div class="empty-icon">📭</div>
       <p>Bạn chưa có đơn hàng nào</p>
@@ -28,14 +25,12 @@
       </router-link>
     </div>
 
-    <!-- Danh sách đơn hàng -->
     <div v-else class="orders-list">
       <div 
         v-for="order in filteredOrders" 
         :key="order.id" 
         class="order-card"
       >
-        <!-- Header của mỗi đơn hàng -->
         <div class="order-header">
           <div>
             <strong class="order-code">#{{ order.orderCode }}</strong>
@@ -49,7 +44,6 @@
           </span>
         </div>
 
-        <!-- Danh sách sản phẩm trong đơn -->
         <div class="order-items">
           <div 
             v-for="item in order.items.slice(0, 2)" 
@@ -70,14 +64,11 @@
               {{ formatPrice(item.total) }}₫
             </div>
           </div>
-
-          <!-- Nếu có nhiều hơn 2 sản phẩm -->
           <div v-if="order.items.length > 2" class="more-items">
             +{{ order.items.length - 2 }} sản phẩm khác
           </div>
         </div>
 
-        <!-- Footer: Tổng tiền + Nút actions -->
         <div class="order-footer">
           <div class="order-total">
             <span>Tổng cộng:</span>
@@ -93,8 +84,6 @@
             >
               Chi tiết
             </button>
-            
-            <!-- 🆕 Nút mua lại -->
             <button 
               v-if="order.status === 'delivered'"
               @click="reorder(order)" 
@@ -108,22 +97,18 @@
       </div>
     </div>
 
-    <!-- Modal Chi Tiết Đơn Hàng -->
     <div 
       v-if="showDetailModal && selectedOrder" 
       class="modal-overlay" 
       @click="closeModal"
     >
       <div class="modal-content" @click.stop>
-        <!-- Header Modal -->
         <div class="modal-header">
           <h3>Chi tiết đơn hàng</h3>
           <button @click="closeModal" class="btn-close">×</button>
         </div>
 
-        <!-- Body Modal -->
         <div class="modal-body">
-          <!-- Thông tin đơn hàng -->
           <div class="detail-section">
             <h4>📋 Thông tin đơn hàng</h4>
             <div class="detail-grid">
@@ -147,7 +132,6 @@
             </div>
           </div>
 
-          <!-- Thông tin người nhận -->
           <div class="detail-section">
             <h4>👤 Thông tin người nhận</h4>
             <div class="detail-grid">
@@ -165,8 +149,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Sản phẩm -->
           <div class="detail-section">
             <h4>📦 Sản phẩm</h4>
             <div class="products-list">
@@ -193,7 +175,6 @@
             </div>
           </div>
 
-          <!-- Thanh toán -->
           <div class="detail-section">
             <h4>💳 Thanh toán</h4>
             <div class="payment-summary">
@@ -218,7 +199,6 @@
             </div>
           </div>
 
-          <!-- Ghi chú (nếu có) -->
           <div v-if="selectedOrder.note" class="detail-section">
             <h4>📝 Ghi chú</h4>
             <p class="note-text">{{ selectedOrder.note }}</p>
@@ -259,10 +239,8 @@ const loadOrders = async () => {
     loading.value = true
     const userId = auth.user?.id
     
-    // Lấy tất cả đơn hàng
     const response = await axios.get(`${API_BASE_URL}/orders?_sort=createdAt&_order=desc`)
     
-    // Lọc đơn hàng theo email của user hiện tại
     const userEmail = auth.user?.email
     orders.value = response.data.filter(order => 
       order.customer.email === userEmail
@@ -307,7 +285,6 @@ const closeModal = () => {
   selectedOrder.value = null
 }
 
-// 🆕 Hàm load sản phẩm
 const loadProduct = async (productId) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/products/${productId}`)
@@ -318,7 +295,6 @@ const loadProduct = async (productId) => {
   }
 }
 
-// 🆕 Hàm mua lại đơn hàng
 const reorder = async (order) => {
   if (!confirm('🔄 Bạn muốn mua lại tất cả sản phẩm trong đơn hàng này?')) return
   
@@ -327,7 +303,6 @@ const reorder = async (order) => {
     let addedCount = 0
     let outOfStockProducts = []
     
-    // Kiểm tra và thêm từng sản phẩm vào giỏ
     for (const item of order.items) {
       const product = await loadProduct(item.productId)
       
@@ -342,7 +317,6 @@ const reorder = async (order) => {
         continue
       }
       
-      // Kiểm tra số lượng còn đủ không
       const quantityToAdd = Math.min(item.quantity, product.quantity)
       
       if (quantityToAdd < item.quantity) {
@@ -353,20 +327,18 @@ const reorder = async (order) => {
       addedCount++
     }
     
-    // Thông báo kết quả
-    let message = `✅ Đã thêm ${addedCount} sản phẩm vào giỏ hàng!`
+    let message = ` Đã thêm ${addedCount} sản phẩm vào giỏ hàng!`
     
     if (outOfStockProducts.length > 0) {
-      message += `\n\n⚠️ Một số sản phẩm không thể thêm:\n• ${outOfStockProducts.join('\n• ')}`
+      message += `\n\n Một số sản phẩm không thể thêm:\n• ${outOfStockProducts.join('\n• ')}`
     }
     
     alert(message)
     
-    // Chuyển đến giỏ hàng
     router.push('/cart')
     
   } catch (error) {
-    console.error('❌ Lỗi mua lại đơn hàng:', error)
+    console.error(' Lỗi mua lại đơn hàng:', error)
     alert('Có lỗi xảy ra. Vui lòng thử lại!')
   } finally {
     reordering.value = false
