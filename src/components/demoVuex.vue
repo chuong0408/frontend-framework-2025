@@ -6,7 +6,6 @@ const store = useStore()
 const demo = computed(()=> store.state) 
 console.log('demo',store)
 const handleButtonIncrease = ()=>{
-    //store.commit('increment)
     store.dispatch('increamentAsync')
 }
 const handeButtonDecrease = ()=>{

@@ -13,7 +13,6 @@
       </div>
     </div>
 
-    <!-- Tổng quan -->
     <div class="overview-cards">
       <div class="stat-card">
         <div class="stat-icon">👥</div>
@@ -48,9 +47,8 @@
       </div>
     </div>
 
-    <!-- Danh sách khách hàng -->
     <div v-if="loading" class="loading">
-      <p>⏳ Đang tải dữ liệu...</p>
+      <p> Đang tải dữ liệu...</p>
     </div>
 
     <div v-else class="table-container">
@@ -101,16 +99,14 @@
       </table>
     </div>
 
-    <!-- Modal chi tiết khách hàng -->
     <div v-if="showDetailModal && selectedCustomer" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h3>📊 Chi tiết khách hàng</h3>
+          <h3>Chi tiết khách hàng</h3>
           <button @click="closeModal" class="btn-close">×</button>
         </div>
 
         <div class="modal-body">
-          <!-- Thông tin khách hàng -->
           <div class="detail-section">
             <h4>👤 Thông tin cá nhân</h4>
             <div class="detail-grid">
@@ -133,9 +129,9 @@
             </div>
           </div>
 
-          <!-- Thống kê -->
+
           <div class="detail-section">
-            <h4>📈 Thống kê mua hàng</h4>
+            <h4>Thống kê mua hàng</h4>
             <div class="stats-grid">
               <div class="stat-box">
                 <span class="stat-number">{{ selectedCustomer.orderCount }}</span>
@@ -156,9 +152,8 @@
             </div>
           </div>
 
-          <!-- Lịch sử đơn hàng -->
           <div class="detail-section">
-            <h4>📦 Lịch sử đơn hàng ({{ selectedCustomer.orders.length }})</h4>
+            <h4> Lịch sử đơn hàng ({{ selectedCustomer.orders.length }})</h4>
             <div class="orders-list">
               <div v-for="order in selectedCustomer.orders" :key="order.id" class="order-row">
                 <div class="order-info">
@@ -195,7 +190,6 @@ const sortBy = ref('spending-desc')
 const selectedCustomer = ref(null)
 const showDetailModal = ref(false)
 
-// Tính toán thống kê
 const customerStats = computed(() => {
   const statsMap = {}
   
