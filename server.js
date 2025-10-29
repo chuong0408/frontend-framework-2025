@@ -85,15 +85,29 @@ app.get('/products/:id', (req, res) => {
   }
 })
 
-// 3. Thêm sản phẩm mới
-// server.js - Cập nhật lại endpoint POST /products
 app.post('/products', upload.array('images[]'), (req, res) => {
+  console.log('=== POST /products ===')
+  console.log('Body:', req.body)
+  console.log('Files:', req.files)
+  
   try {
     const { name, categoryId, quantity, discount } = req.body
     
     // Validation
     if (!name || !categoryId) {
-      return res.status(400).json({ error: 'Thiếu thông tin bắt buộc (name, categoryId)' })
+      console.error('❌ Missing required fields')
+      return res.status(400).json({ 
+        success: false,
+        error: 'Thiếu thông tin bắt buộc (name, categoryId)' 
+      })
+    }
+    
+    if (!req.files || req.files.length === 0) {
+      console.error('❌ No files uploaded')
+      return res.status(400).json({ 
+        success: false,
+        error: 'Vui lòng chọn ít nhất một hình ảnh' 
+      })
     }
     
     // Parse số an toàn
@@ -101,11 +115,17 @@ app.post('/products', upload.array('images[]'), (req, res) => {
     const parsedDiscount = parseFloat(discount) || 0
     
     if (parsedQuantity < 0) {
-      return res.status(400).json({ error: 'Số lượng phải >= 0' })
+      return res.status(400).json({ 
+        success: false,
+        error: 'Số lượng phải >= 0' 
+      })
     }
     
     if (parsedDiscount < 0 || parsedDiscount > 100) {
-      return res.status(400).json({ error: 'Giảm giá phải từ 0-100' })
+      return res.status(400).json({ 
+        success: false,
+        error: 'Giảm giá phải từ 0-100' 
+      })
     }
     
     const imagePaths = req.files.map(file => `/uploads/${file.filename}`)
@@ -121,14 +141,29 @@ app.post('/products', upload.array('images[]'), (req, res) => {
     }
 
     const db = readDB()
+    
+    if (!db.products) {
+      db.products = []
+    }
+    
     db.products.push(product)
     writeDB(db)
     
-    console.log('✅ Đã thêm sản phẩm:', product)
-    res.json({ message: 'Đã lưu sản phẩm', product })
+    console.log('✅ Product added:', product)
+    
+    // QUAN TRỌNG: Phải return JSON hợp lệ
+    return res.status(201).json({ 
+      success: true,
+      message: 'Đã lưu sản phẩm', 
+      product: product
+    })
+    
   } catch (err) {
-    console.error('❌ Error adding product:', err)
-    res.status(500).json({ error: 'Lỗi khi thêm sản phẩm: ' + err.message })
+    console.error('❌ Server error:', err)
+    return res.status(500).json({ 
+      success: false,
+      error: 'Lỗi server: ' + err.message 
+    })
   }
 })
 

@@ -3,18 +3,18 @@
     <h3>{{ isEditMode ? 'Sửa sản phẩm' : 'Thêm sản phẩm mới' }}</h3>
 
     <input v-model="product.name" placeholder="Tên sản phẩm" />
-    
+
     <select v-model="product.categoryId">
       <option disabled value="">-- Chọn danh mục --</option>
       <option v-for="c in categories" :key="c.id" :value="c.id">
         {{ c.name }} — {{ c.description }}
       </option>
     </select>
-    
+
     <input v-model="product.quantity" type="number" min="0" placeholder="Số lượng" />
-    
+
     <input v-model="product.discount" type="number" min="0" max="100" placeholder="Giảm giá (%)" />
-    
+
     <label>Chọn hình ảnh sản phẩm (có thể chọn nhiều):</label>
     <input type="file" multiple @change="handleFileChange" accept="image/*" />
 
@@ -67,7 +67,7 @@ const productId = ref(null)
 
 onMounted(async () => {
   await loadCategories()
-  
+
   if (route.params.id) {
     isEditMode.value = true
     productId.value = route.params.id
@@ -96,19 +96,19 @@ const loadProduct = async (id) => {
   try {
     loading.value = true
     console.log('📦 Đang tải sản phẩm từ:', `${API_BASE_URL}/products/${id}`)
-    
+
     const res = await axios.get(`${API_BASE_URL}/products/${id}`)
     const data = res.data
-    
+
     console.log('✅ Dữ liệu sản phẩm:', data)
-    
+
     product.value = {
       name: data.name || '',
       categoryId: data.categoryId || '',
       quantity: data.quantity || 0,
       discount: data.discount || 0
     }
-    
+
     // Load preview images nếu có
     if (data.images && Array.isArray(data.images)) {
       existingImages.value = data.images
@@ -117,7 +117,7 @@ const loadProduct = async (id) => {
       })
       console.log('🖼️ Đã tải', previewImages.value.length, 'ảnh')
     }
-    
+
     showMessage('Đã tải thông tin sản phẩm', false)
   } catch (err) {
     console.error(' Load product error:', err)
@@ -138,22 +138,22 @@ const handleFileChange = (e) => {
   }
 
   files.value = valid
-  
+
   // Tạo preview cho ảnh mới
   const newPreviews = valid.map(file => URL.createObjectURL(file))
-  
+
   // Nếu đang edit, giữ lại ảnh cũ và thêm ảnh mới
   if (isEditMode.value) {
     previewImages.value = [
-      ...existingImages.value.map(img => 
+      ...existingImages.value.map(img =>
         img.startsWith('http') ? img : `${API_BASE_URL}${img}`
-      ), 
+      ),
       ...newPreviews
     ]
   } else {
     previewImages.value = newPreviews
   }
-  
+
   console.log('📸 Đã chọn', valid.length, 'ảnh')
 }
 
@@ -187,46 +187,73 @@ const submitProduct = async () => {
   formData.append('categoryId', product.value.categoryId)
   formData.append('quantity', product.value.quantity)
   formData.append('discount', product.value.discount)
-  
-  files.value.forEach((file, index) => {
+
+  files.value.forEach((file) => {
     formData.append('images[]', file)
-    console.log(`📎 File ${index + 1}:`, file.name)
+    console.log(`📎 File:`, file.name)
   })
-  
+
   if (isEditMode.value && existingImages.value.length > 0) {
     formData.append('existingImages', JSON.stringify(existingImages.value))
   }
 
   try {
-    if (isEditMode.value) {
-      console.log(' Đang cập nhật sản phẩm:', productId.value)
-      const res = await axios.put(`${API_BASE_URL}/products/${productId.value}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-      console.log(' Kết quả cập nhật:', res.data)
-      showMessage('Sản phẩm đã được cập nhật thành công!', false)
-      alert('Cập nhật thành công!')
+    console.log('🚀 Sending request to:', `${API_BASE_URL}/products`)
+
+    const url = isEditMode.value
+      ? `${API_BASE_URL}/products/${productId.value}`
+      : `${API_BASE_URL}/products`
+
+    const method = isEditMode.value ? 'PUT' : 'POST'
+
+    const res = await axios({
+      method,
+      url,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      // ✅ QUAN TRỌNG: Validate response type
+      validateStatus: (status) => status < 500
+    })
+
+    console.log('📨 Response:', res.status, res.data)
+
+    if (res.status === 200 || res.status === 201) {
+      showMessage(
+        isEditMode.value
+          ? 'Sản phẩm đã được cập nhật thành công!'
+          : 'Sản phẩm đã được thêm thành công!',
+        false
+      )
+      alert(isEditMode.value ? 'Cập nhật thành công!' : 'Thêm mới thành công!')
+
+      setTimeout(() => {
+        router.push('/admin/products')
+      }, 500)
     } else {
-      // Thêm mới sản phẩm
-      console.log(' Đang thêm sản phẩm mới')
-      const res = await axios.post(`${API_BASE_URL}/products`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-      console.log(' Kết quả thêm mới:', res.data)
-      showMessage('Sản phẩm đã được thêm thành công!', false)
-      alert('Thêm mới thành công!')
+      // Handle error response
+      const errorMsg = res.data?.error || 'Có lỗi xảy ra'
+      showMessage(errorMsg, true)
+      alert('❌ ' + errorMsg)
     }
-    
-    setTimeout(() => {
-      router.push('/admin/products')
-    }, 500)
+
   } catch (err) {
-    console.error(' Submit error:', err)
+    console.error('❌ Submit error:', err)
     console.error('Response:', err.response?.data)
+    console.error('Status:', err.response?.status)
+
+    const errorMsg = err.response?.data?.error
+      || err.message
+      || 'Có lỗi xảy ra'
+
     showMessage(
-      isEditMode.value ? 'Lỗi khi cập nhật sản phẩm' : 'Lỗi khi thêm sản phẩm', 
+      isEditMode.value
+        ? 'Lỗi khi cập nhật sản phẩm: ' + errorMsg
+        : 'Lỗi khi thêm sản phẩm: ' + errorMsg,
       true
     )
+    alert('❌ ' + errorMsg)
   } finally {
     loading.value = false
   }
@@ -239,11 +266,11 @@ const resetForm = () => {
     loadProduct(productId.value)
   } else {
 
-    product.value = { 
-      name: '', 
-      categoryId: '', 
-      quantity: 0, 
-      discount: 0 
+    product.value = {
+      name: '',
+      categoryId: '',
+      quantity: 0,
+      discount: 0
     }
     files.value = []
     previewImages.value = []

@@ -75,6 +75,18 @@
         "/uploads/1760340806352-Lá»±a Chá»n Tá»§ TrÆ°ng BÃ y Figure.jpg"
       ],
       "createdAt": "2025-10-13T07:33:26.355Z"
+    },
+    {
+      "id": "p_1761766783173",
+      "name": "test1",
+      "categoryId": 1,
+      "discount": 10,
+      "quantity": 10,
+      "images": [
+        "/uploads/1761766783143-Figure Quan VÅ© â Biá»u tÆ°á»£ng cá»§a uy nghi vÃ  chÃ­nh trá»±c.jpg",
+        "/uploads/1761766783155-Figure Tháº§n TÃ i â Biá»u tÆ°á»£ng cá»§a tÃ i lá»c vÃ  thá»nh vÆ°á»£ng.jpg"
+      ],
+      "createdAt": "2025-10-29T19:39:43.173Z"
     }
   ],
   "orders": [
