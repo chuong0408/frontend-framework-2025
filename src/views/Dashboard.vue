@@ -8,7 +8,6 @@ const logout = () => {
   router.push('/login')
 }
 </script>
-
 <template>
   <div class="dashboard-wrapper">
     <nav class="navbar">
@@ -21,13 +20,15 @@ const logout = () => {
           <router-link to="/admin/products" class="nav-link">
             📦 Sản phẩm
           </router-link>
+          <router-link to="/admin/categories" class="nav-link">
+            📑 Danh mục
+          </router-link>
           <router-link to="/admin/orders" class="nav-link">
             🛒 Đơn hàng
           </router-link>
           <router-link to="/admin/users" class="nav-link">
             👥 Người dùng
           </router-link>
-          <!-- 🆕 Menu mới -->
           <router-link to="/admin/customers" class="nav-link">
             📊 Khách hàng
           </router-link>

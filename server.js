@@ -86,22 +86,36 @@ app.get('/products/:id', (req, res) => {
 })
 
 // 3. Thêm sản phẩm mới
+// server.js - Cập nhật lại endpoint POST /products
 app.post('/products', upload.array('images[]'), (req, res) => {
   try {
     const { name, categoryId, quantity, discount } = req.body
     
+    // Validation
     if (!name || !categoryId) {
-      return res.status(400).json({ error: 'Thiếu thông tin bắt buộc' })
+      return res.status(400).json({ error: 'Thiếu thông tin bắt buộc (name, categoryId)' })
+    }
+    
+    // Parse số an toàn
+    const parsedQuantity = parseInt(quantity) || 0
+    const parsedDiscount = parseFloat(discount) || 0
+    
+    if (parsedQuantity < 0) {
+      return res.status(400).json({ error: 'Số lượng phải >= 0' })
+    }
+    
+    if (parsedDiscount < 0 || parsedDiscount > 100) {
+      return res.status(400).json({ error: 'Giảm giá phải từ 0-100' })
     }
     
     const imagePaths = req.files.map(file => `/uploads/${file.filename}`)
 
     const product = {
       id: 'p_' + Date.now(),
-      name,
-      categoryId: Number(categoryId),
-      discount: Number(discount) || 0,
-      quantity: Number(quantity) || 0,
+      name: name.trim(),
+      categoryId: parseInt(categoryId),
+      discount: parsedDiscount,
+      quantity: parsedQuantity,
       images: imagePaths,
       createdAt: new Date().toISOString()
     }
@@ -110,12 +124,14 @@ app.post('/products', upload.array('images[]'), (req, res) => {
     db.products.push(product)
     writeDB(db)
     
+    console.log('✅ Đã thêm sản phẩm:', product)
     res.json({ message: 'Đã lưu sản phẩm', product })
   } catch (err) {
-    console.error('Error adding product:', err)
-    res.status(500).json({ error: 'Lỗi khi thêm sản phẩm' })
+    console.error('❌ Error adding product:', err)
+    res.status(500).json({ error: 'Lỗi khi thêm sản phẩm: ' + err.message })
   }
 })
+
 
 // 4. Cập nhật sản phẩm
 app.put('/products/:id', upload.array('images[]'), (req, res) => {

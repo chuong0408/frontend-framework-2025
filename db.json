@@ -49,19 +49,6 @@
   ],
   "products": [
     {
-      "id": "1760077668907",
-      "name": "111111",
-      "categoryId": 1,
-      "images": [
-        "/uploads/1760077668873-Bá» sÆ°u táº­p figure Cupoche.jpg",
-        "/uploads/1760077668888-Chi tiáº¿t figure Cupoche.jpg",
-        "/uploads/1760077668892-Má» há»p figure Cupoche.jpg"
-      ],
-      "quantity": 123,
-      "discount": 5125,
-      "updatedAt": "2025-10-13T07:17:16.175Z"
-    },
-    {
       "id": "p_1760300871808",
       "name": "Sản phẩm 5",
       "categoryId": 2,
@@ -169,7 +156,7 @@
     },
     {
       "id": "8b27",
-      "productId": "1760077668907",
+      "productId": null,
       "userName": "huybmt",
       "rating": 5,
       "comment": "scscs",
@@ -177,7 +164,7 @@
     },
     {
       "id": "df83",
-      "productId": "1760077668907",
+      "productId": null,
       "userName": "huybmt",
       "rating": 3,
       "comment": "hàng chưa được chất lượng lắm",
@@ -211,6 +198,12 @@
       "name": "Mô hình Văn hóa",
       "description": "Sản phẩm truyền thống",
       "type": "Nghệ thuật"
+    },
+    {
+      "id": "d9ad",
+      "name": "Mô hình Sưu tầm",
+      "description": "Độc quyền",
+      "type": "Giải trí"
     }
   ]
 }

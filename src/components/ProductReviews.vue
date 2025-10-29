@@ -1,7 +1,7 @@
 <template>
   <div class="reviews-container">
     <div class="reviews-header">
-      <h3>⭐ Đánh giá sản phẩm</h3>
+      <h3> Đánh giá sản phẩm</h3>
       <div class="rating-summary">
         <div class="average-rating">
           <span class="rating-number">{{ averageRating.toFixed(1) }}</span>

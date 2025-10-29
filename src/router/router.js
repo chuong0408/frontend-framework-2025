@@ -13,7 +13,6 @@ import Register from '../views/Register.vue'
 import ProductFilter from '../components/ProductFilter.vue'
 
 const routes = [
-  // Trang chủ
   {
     path: '/',
     name: 'Home',
@@ -28,52 +27,43 @@ const routes = [
     name: 'Register',
     component: Register
   },
-  // Profile
   {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Profile.vue'),
     meta: { requiresAuth: true }
   },
-  // Giỏ hàng
   {
     path: '/cart',
     name: 'Cart',
     component: () => import('../views/Cart.vue')
   },
-  // Checkout
   {
     path: '/checkout',
     name: 'Checkout',
     component: Checkout
   },
-  // Danh sách sản phẩm (dùng chung cho cả Admin và User)
   {
     path: '/products',
     name: 'ProductsPublic',
     component: ProductFilter
   },
-  // Chi tiết sản phẩm (dùng chung)
   {
     path: '/products/:id',
     name: 'ProductDetailPublic',
     component: ProductDetail
   },
-  // 🆕 Yêu thích
   {
     path: '/favorites',
     name: 'Favorites',
     component: () => import('../views/Favorites.vue'),
     meta: { requiresAuth: true }
   },
-  // 🆕 Lọc sản phẩm
   {
     path: '/products/filter',
     name: 'ProductFilter',
     component: () => import('../components/ProductFilter.vue')
   },
-
-  // Routes dành cho ADMIN
   {
     path: '/admin',
     component: Dashboard,
@@ -122,23 +112,25 @@ const routes = [
         name: 'OrderAdmin',
         meta: { requiresAuth: true, requiresAdmin: true }
       },
-      // 🆕 Thống kê khách hàng
       {
         path: 'customers',
         name: 'CustomerStats',
         component: () => import('../components/CustomerStats.vue'),
         meta: { requiresAuth: true, requiresAdmin: true }
       },
-      // 🆕 Báo cáo
       {
         path: 'reports',
         name: 'Reports',
         component: () => import('../views/Reports.vue'),
         meta: { requiresAuth: true, requiresAdmin: true }
+      }, {
+        path: 'categories',
+        component: () => import('../components/CategoryAdmin.vue'),
+        name: 'CategoryAdmin',
+        meta: { requiresAuth: true, requiresAdmin: true }
       }
     ]
   },
-  // Đơn hàng của user
   {
     path: '/my-orders',
     name: 'MyOrders',
@@ -152,7 +144,6 @@ const router = createRouter({
   routes
 })
 
-// Navigation Guard
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     next('/login')
