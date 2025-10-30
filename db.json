@@ -67,14 +67,15 @@
       "name": "chuongakjd",
       "categoryId": 1,
       "discount": 10225,
-      "quantity": 12,
+      "quantity": 123,
       "images": [
         "/uploads/1760340806326-Sáº¯p Xáº¿p Figure Theo Chá»§ Äá» Anime.jpg",
         "/uploads/1760340806336-Dá»¥ng Cá»¥ Vá» Sinh Figure.jpg",
         "/uploads/1760340806346-Há» Thá»ng Ãnh SÃ¡ng HoÃ n Háº£o.jpg",
         "/uploads/1760340806352-Lá»±a Chá»n Tá»§ TrÆ°ng BÃ y Figure.jpg"
       ],
-      "createdAt": "2025-10-13T07:33:26.355Z"
+      "createdAt": "2025-10-13T07:33:26.355Z",
+      "updatedAt": "2025-10-30T01:10:11.288Z"
     },
     {
       "id": "p_1761766783173",

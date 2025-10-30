@@ -203,20 +203,27 @@ app.delete('/categories/:id', (req, res) => {
 // ==========================================
 app.get('/users', (req, res) => {
   try {
-    const { userName, password } = req.query
-    if (!userName || !password)
-      return res.status(400).json({ error: 'Thiếu tên đăng nhập hoặc mật khẩu' })
-
     const db = readDB()
-    const user = (db.users || []).find(
-      (u) => u.userName === userName && u.password === password
-    )
+    
+    // Nếu có userName và password trong query -> đăng nhập
+    const { userName, password } = req.query
+    if (userName && password) {
+      const user = (db.users || []).find(
+        (u) => u.userName === userName && u.password === password
+      )
 
-    if (!user) return res.status(401).json({ error: 'Sai tài khoản hoặc mật khẩu' })
+      if (!user) {
+        return res.status(404).json([]) // Trả về mảng rỗng thay vì 401
+      }
 
-    res.json({ success: true, message: 'Đăng nhập thành công', user })
+      return res.json([user]) // Trả về mảng chứa user
+    }
+    
+    // Nếu không có query -> trả về tất cả users
+    res.json(db.users || [])
   } catch (err) {
-    res.status(500).json({ error: 'Lỗi server khi đăng nhập' })
+    console.error('❌ Lỗi /users:', err)
+    res.status(500).json({ error: 'Lỗi server' })
   }
 })
 

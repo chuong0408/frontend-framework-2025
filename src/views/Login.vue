@@ -16,11 +16,16 @@ const handleLogin = async () => {
     return
   }
 
-  try {
+try {
     loading.value = true
     message.value = ''
     
-    // ✅ Sửa lại query string
+    console.log('🔐 Đang đăng nhập với:', {
+      userName: username.value,
+      password: password.value
+    })
+    
+    // ✅ Gọi API với query params
     const response = await axios.get(
       `http://localhost:3001/users`,
       {
@@ -31,20 +36,25 @@ const handleLogin = async () => {
       }
     )
 
-    console.log('Response:', response.data)
+    console.log('📨 Response status:', response.status)
+    console.log('📦 Response data:', response.data)
 
-    if (response.data && response.data.length > 0) {
+    // ✅ Kiểm tra response
+    if (response.status === 200 && response.data && response.data.length > 0) {
       const user = response.data[0]
+      
+      console.log('✅ User found:', user)
       
       // Lưu thông tin user vào auth store
       auth.login({
+        id: user.id,
         username: user.userName,
         email: user.email,
         fullName: user.fullName,
         role: user.role || 'user'
       })
 
-      message.value = 'Đăng nhập thành công!'
+      message.value = '✅ Đăng nhập thành công!'
 
       // Redirect theo role
       setTimeout(() => {
@@ -53,23 +63,25 @@ const handleLogin = async () => {
         } else {
           router.push('/')
         }
-      }, 500)
+      }, 800)
       
     } else {
-      message.value = 'Sai tài khoản hoặc mật khẩu'
+      console.warn('⚠️ Không tìm thấy user')
+      message.value = '❌ Sai tài khoản hoặc mật khẩu'
     }
     
   } catch (error) {
-    console.error('Lỗi đăng nhập:', error)
+    console.error('❌ Lỗi đăng nhập:', error)
     
     if (error.response) {
-      // Server trả về response nhưng có lỗi
-      message.value = `Lỗi server: ${error.response.status}`
+      console.error('Response error:', error.response.data)
+      message.value = `❌ Lỗi server: ${error.response.status}`
     } else if (error.request) {
-      // Request được gửi nhưng không nhận được response
-      message.value = 'Không thể kết nối đến server. Vui lòng kiểm tra server đang chạy!'
+      console.error('Request error:', error.request)
+      message.value = '❌ Không thể kết nối đến server. Vui lòng kiểm tra server đang chạy!'
     } else {
-      message.value = 'Có lỗi xảy ra: ' + error.message
+      console.error('Other error:', error.message)
+      message.value = '❌ Có lỗi xảy ra: ' + error.message
     }
   } finally {
     loading.value = false
@@ -108,6 +120,12 @@ const handleLogin = async () => {
       Chưa có tài khoản?
       <router-link to="/register">Đăng ký ngay</router-link>
     </p>
+
+    <div class="test-accounts">
+      <p><strong>Tài khoản test:</strong></p>
+      <p>Admin: <code>admin / 123456</code></p>
+      <p>User: <code>user / 123456</code></p>
+    </div>
   </div>
 </template>
 
@@ -208,5 +226,26 @@ button:disabled {
 
 .register-link a:hover {
   text-decoration: underline;
+}
+
+.test-accounts {
+  margin-top: 30px;
+  padding: 15px;
+  background: #f0f0f0;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.test-accounts p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.test-accounts code {
+  background: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #4CAF50;
+  font-weight: 600;
 }
 </style>

@@ -1,38 +1,235 @@
 {
-  "users": [
+  "posts": [
     {
       "id": "1",
-      "userName": "admin",
-      "fullName": "Administrator",
-      "email": "admin@admin.com",
-      "password": "123456",
-      "role": "admin"
+      "title": "another title",
+      "creator": "admin",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vulputate vitae eros ac convallis. Nullam imperdiet quam nec dui facilisis blandit. Duis vehicula semper orci, at efficitur sapien aliquet eu. In dui tortor, imperdiet in est sit amet, placerat commodo erat. Nam id lorem ac nisl egestas rhoncus. Integer vitae vehicula dui, vel commodo enim. Fusce varius ultrices tellus. Mauris nec ante bibendum, sagittis quam ut, dignissim est. Praesent ornare mi at lectus maximus, at tristique lacus dictum. Vestibulum vulputate nisl sit amet quam tincidunt, vel congue lorem lacinia. Mauris iaculis, sem at venenatis vehicula, augue nisi sollicitudin turpis, a pellentesque nibh mauris sit amet felis",
+      "tags": "trips",
+      "time": 8,
+      "image": "https://tse3.mm.bing.net/th/id/OIP.KYuOpkpecLMDa8XBEjRhLAHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
     },
     {
-      "id": "2",
+      "id": "3b2a",
+      "title": "au nau",
+      "time": 10,
+      "image": "https://tse3.mm.bing.net/th/id/OIP.KYuOpkpecLMDa8XBEjRhLAHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+      "description": "tuaidkfakj asn",
+      "creator": "admin",
+      "tags": "news"
+    },
+    {
+      "id": "c549",
+      "title": "",
+      "price": "",
+      "category": "",
+      "image": "",
+      "description": "",
+      "creator": "admin",
+      "tags": "news"
+    }
+  ],
+  "users": [
+    {
       "userName": "user",
-      "fullName": "Test User",
-      "email": "user@test.com",
+      "fullName": "Chuong123",
+      "email": "chuongpdpk03971@gmail.com",
+      "password": "123456",
+      "role": "admin",
+      "id": "aec9"
+    },
+    {
+      "id": "7a32",
+      "userName": "huy01",
+      "fullName": "huybmt",
+      "email": "huy@gmail.com",
       "password": "123456",
       "role": "user"
     }
   ],
-  "products": [],
-  "categories": [
+  "products": [
+    {
+      "id": "p_1760300871808",
+      "name": "Sản phẩm 5",
+      "categoryId": 2,
+      "discount": 4535151,
+      "quantity": 123,
+      "images": [
+        "/uploads/1760300871789-Sáº¯p Xáº¿p Figure Theo Chá»§ Äá» Anime.jpg",
+        "/uploads/1760300871796-Dá»¥ng Cá»¥ Vá» Sinh Figure.jpg",
+        "/uploads/1760300871799-Há» Thá»ng Ãnh SÃ¡ng HoÃ n Háº£o.jpg",
+        "/uploads/1760300871802-Lá»±a Chá»n Tá»§ TrÆ°ng BÃ y Figure.jpg"
+      ],
+      "createdAt": "2025-10-12T20:27:51.808Z"
+    },
+    {
+      "id": "p_1760340806355",
+      "name": "chuongakjd",
+      "categoryId": 1,
+      "discount": 10225,
+      "quantity": 12,
+      "images": [
+        "/uploads/1760340806326-Sáº¯p Xáº¿p Figure Theo Chá»§ Äá» Anime.jpg",
+        "/uploads/1760340806336-Dá»¥ng Cá»¥ Vá» Sinh Figure.jpg",
+        "/uploads/1760340806346-Há» Thá»ng Ãnh SÃ¡ng HoÃ n Háº£o.jpg",
+        "/uploads/1760340806352-Lá»±a Chá»n Tá»§ TrÆ°ng BÃ y Figure.jpg"
+      ],
+      "createdAt": "2025-10-13T07:33:26.355Z"
+    },
+    {
+      "id": "p_1761766783173",
+      "name": "test1",
+      "categoryId": 1,
+      "discount": 10,
+      "quantity": 100,
+      "images": [
+        "/uploads/1761766783143-Figure Quan VÅ© â Biá»u tÆ°á»£ng cá»§a uy nghi vÃ  chÃ­nh trá»±c.jpg",
+        "/uploads/1761766783155-Figure Tháº§n TÃ i â Biá»u tÆ°á»£ng cá»§a tÃ i lá»c vÃ  thá»nh vÆ°á»£ng.jpg"
+      ],
+      "createdAt": "2025-10-29T19:39:43.173Z",
+      "updatedAt": "2025-10-29T21:05:25.337Z"
+    },
+    {
+      "id": "p_1761771863689",
+      "name": "tesst 1",
+      "categoryId": 1,
+      "discount": 20,
+      "quantity": 1000,
+      "images": [
+        "/uploads/1761771863656-Figure Pháº­t Di Láº·c â Mang láº¡i háº¡nh phÃºc vÃ  bÃ¬nh an.jpg",
+        "/uploads/1761771863668-Figure Quan VÅ© â Biá»u tÆ°á»£ng cá»§a uy nghi vÃ  chÃ­nh trá»±c.jpg",
+        "/uploads/1761771863676-Figure Tháº§n TÃ i â Biá»u tÆ°á»£ng cá»§a tÃ i lá»c vÃ  thá»nh vÆ°á»£ng.jpg"
+      ],
+      "createdAt": "2025-10-29T21:04:23.689Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "c4a4",
+      "orderCode": "ORD1760681131491",
+      "customer": {
+        "fullName": "huybmt",
+        "phone": "0933212096",
+        "email": "huy@gmail.com",
+        "address": "1254 ha huy tap, Quan binh thanh, hcm",
+        "userId": null
+      },
+      "items": [
+        {
+          "productId": "1760077668907",
+          "name": "111111",
+          "image": "/uploads/1760077668873-Bá» sÆ°u táº­p figure Cupoche.jpg",
+          "quantity": 4,
+          "price": 5125,
+          "total": 20500
+        }
+      ],
+      "payment": {
+        "method": "cod",
+        "subtotal": 20500,
+        "shipping": 0,
+        "discount": 0,
+        "total": 20500
+      },
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2025-10-17T06:05:31.491Z",
+      "updatedAt": "2025-10-19T16:47:55.886Z"
+    },
+    {
+      "id": "02c8",
+      "orderCode": "ORD1760690153311",
+      "customer": {
+        "fullName": "huybmt",
+        "phone": "0933212096",
+        "email": "huy@gmail.com",
+        "address": "133, Binh thanh, hcm",
+        "userId": null
+      },
+      "items": [
+        {
+          "productId": "1760077668907",
+          "name": "111111",
+          "image": "/uploads/1760077668873-Bá» sÆ°u táº­p figure Cupoche.jpg",
+          "quantity": 7,
+          "price": 5125,
+          "total": 35875
+        }
+      ],
+      "payment": {
+        "method": "cod",
+        "subtotal": 35875,
+        "shipping": 0,
+        "discount": 0,
+        "total": 35875
+      },
+      "note": "",
+      "status": "pending",
+      "createdAt": "2025-10-17T08:35:53.311Z",
+      "updatedAt": "2025-10-17T08:35:53.312Z"
+    }
+  ],
+  "favorites": [],
+  "reviews": [
     {
       "id": "1",
-      "name": "Điện tử",
-      "description": "Sản phẩm điện tử",
-      "type": "Electronics"
+      "productId": "p_123",
+      "userId": "user_1",
+      "userName": "Nguyễn Văn A",
+      "rating": 5,
+      "comment": "Sản phẩm rất tốt!",
+      "createdAt": "2025-01-15T10:30:00Z"
+    },
+    {
+      "id": "8b27",
+      "productId": null,
+      "userName": "huybmt",
+      "rating": 5,
+      "comment": "scscs",
+      "createdAt": "2025-10-19T20:43:13.876Z"
+    },
+    {
+      "id": "df83",
+      "productId": null,
+      "userName": "huybmt",
+      "rating": 3,
+      "comment": "hàng chưa được chất lượng lắm",
+      "createdAt": "2025-10-21T10:45:54.957Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": null
     },
     {
       "id": "2",
-      "name": "Thời trang",
-      "description": "Quần áo, giày dép",
-      "type": "Fashion"
+      "text": "another comment about post 1",
+      "postId": null
     }
   ],
-  "orders": [],
-  "reviews": [],
-  "favorites": []
+  "profile": {
+    "name": "typicode"
+  },
+  "categories": [
+    {
+      "id": "1",
+      "name": "Mô hình Anime",
+      "description": "Nhân vật nổi tiếng từ Nhật Bản",
+      "type": "Giải trí"
+    },
+    {
+      "id": "2",
+      "name": "Mô hình Văn hóa",
+      "description": "Sản phẩm truyền thống",
+      "type": "Nghệ thuật"
+    },
+    {
+      "id": "d9ad",
+      "name": "Mô hình Sưu tầm",
+      "description": "Độc quyền",
+      "type": "Giải trí"
+    }
+  ]
 }
